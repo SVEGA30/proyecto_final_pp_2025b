@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="proyecto_final_pp.ViewController.AdminMainController"
+      spacing="20" alignment="CENTER" prefWidth="800" prefHeight="650"
+      style="-fx-background-color: linear-gradient(to bottom right, #ffd500, #ffed4e);">
+
+    <padding>
+        <Insets top="30" bottom="30" left="40" right="40"/>
+    </padding>
+
+    <!-- Header -->
+    <VBox spacing="10" alignment="CENTER">
+        <Label text="💼" style="-fx-font-size: 50px;"/>
+        <Label fx:id="lblBienvenidaAdmin" style="-fx-font-family: 'Arial Rounded MT Bold'; -fx-font-weight: bold; -fx-font-size: 24px; -fx-text-fill: #2b2b2b;"/>
+        <Label fx:id="lblEstadisticas" style="-fx-font-size: 14px; -fx-text-fill: #5a5a5a; -fx-font-style: italic;"/>
+    </VBox>
+
+    <!-- Panel de Funcionalidades -->
+    <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);">
+        <VBox spacing="5" alignment="CENTER_LEFT">
+            <Label text="Panel de Administración" style="-fx-font-weight: bold; -fx-font-size: 20px; -fx-text-fill: #2b2b2b;"/>
+            <Label text="Gestión completa del sistema de logística" style="-fx-text-fill: #7a7a7a; -fx-font-size: 14px;"/>
+        </VBox>
+
+        <Separator style="-fx-background-color: #e9ecef;"/>
+
+        <VBox spacing="12">
+            <Button text="📋 Gestionar Usuarios" onAction="#navegarAGestionUsuarios"
+                    style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 280; -fx-pref-height: 45; -fx-font-size: 14px; -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);"/>
+            <Button text="🚚 Gestionar Repartidores" onAction="#navegarAGestionRepartidores"
+                    style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 280; -fx-pref-height: 45; -fx-font-size: 14px; -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);"/>
+            <Button text="📦 Envíos Pendientes" onAction="#navegarAEnviosPendientes"
+                    style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 280; -fx-pref-height: 45; -fx-font-size: 14px; -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);"/>
+            <Button text="📊 Todos los Envíos" onAction="#navegarATodosLosEnvios"
+                    style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 280; -fx-pref-height: 45; -fx-font-size: 14px; -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);"/>
+            <Button text="📈 Generar Reportes" onAction="#navegarAReportes"
+                    style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 280; -fx-pref-height: 45; -fx-font-size: 14px; -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);"/>
+        </VBox>
+    </VBox>
+
+    <!-- Panel de Acciones Rápidas -->
+    <HBox spacing="15" alignment="CENTER">
+        <Button text="🔄 Actualizar Estadísticas" onAction="#actualizarEstadisticasView"
+                style="-fx-background-color: transparent; -fx-text-fill: #7a7a7a; -fx-border-color: #e9ecef; -fx-border-width: 2; -fx-pref-width: 200; -fx-pref-height: 40; -fx-font-size: 13px; -fx-background-radius: 12; -fx-border-radius: 12; -fx-cursor: hand;"/>
+        <Button text="🚪 Cerrar Sesión" onAction="#cerrarSesion"
+                style="-fx-background-color: transparent; -fx-text-fill: #7a7a7a; -fx-border-color: #e9ecef; -fx-border-width: 2; -fx-pref-width: 150; -fx-pref-height: 40; -fx-font-size: 13px; -fx-background-radius: 12; -fx-border-radius: 12; -fx-cursor: hand;"/>
+    </HBox>
+
+    <!-- Footer Informativo -->
+    <VBox spacing="8" alignment="CENTER" style="-fx-background-color: rgba(255,255,255,0.3); -fx-background-radius: 15; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 3);">
+        <Label text="💡 Información del Sistema" style="-fx-font-weight: bold; -fx-text-fill: #2b2b2b;"/>
+        <Label text="Use las opciones del panel para gestionar usuarios, repartidores, envíos y generar reportes."
+               style="-fx-text-fill: #5a5a5a; -fx-font-size: 12px; -fx-wrap-text: true; -fx-text-alignment: center;"/>
+    </VBox>
+
+</VBox>

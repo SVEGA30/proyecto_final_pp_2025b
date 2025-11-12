@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="proyecto_final_pp.ViewController.HistorialEnviosController"
+      spacing="20" alignment="CENTER" prefWidth="900" prefHeight="700"
+      style="-fx-background-color: linear-gradient(to bottom right, #ffd500, #ffed4e);">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- Header -->
+    <HBox spacing="20" alignment="CENTER_LEFT">
+        <VBox spacing="5">
+            <Label text="URBAN EXPRESS" style="-fx-font-family: 'Arial Rounded MT Bold'; -fx-font-weight: bold; -fx-font-size: 24px; -fx-text-fill: #2b2b2b;"/>
+            <Label text="HISTORIAL DE ENVÍOS" style="-fx-font-size: 12px; -fx-text-fill: #5a5a5a; -fx-letter-spacing: 1px;"/>
+        </VBox>
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="🏠 Volver" onAction="#volverAlMenuPrincipal"
+                style="-fx-background-color: transparent; -fx-text-fill: #2b2b2b; -fx-font-weight: bold; -fx-font-size: 13px; -fx-cursor: hand; -fx-padding: 8 15;"/>
+    </HBox>
+
+    <!-- Filtros -->
+    <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);">
+        <Label text="🔍 Filtrar Envíos" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;"/>
+        <HBox spacing="20" alignment="CENTER_LEFT">
+            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                <Label text="Estado:" style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;"/>
+                <ComboBox fx:id="cbFiltroEstado" promptText="Todos los estados"
+                          style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 10; -fx-font-size: 13px;"/>
+            </VBox>
+            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                <Label text="Fecha Desde:" style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;"/>
+                <DatePicker fx:id="dpFiltroDesde"
+                            style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-font-size: 13px;"/>
+            </VBox>
+            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                <Label text="Fecha Hasta:" style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;"/>
+                <DatePicker fx:id="dpFiltroHasta"
+                            style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-font-size: 13px;"/>
+            </VBox>
+            <VBox spacing="8">
+                <Label text=" " style="-fx-text-fill: transparent;"/> <!-- Espaciador -->
+                <Button onAction="#aplicarFiltros" text="Aplicar Filtros"
+                        style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px; -fx-padding: 10 20; -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);"/>
+            </VBox>
+        </HBox>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button onAction="#limpiarFiltros" text="🔄 Limpiar Filtros"
+                    style="-fx-background-color: transparent; -fx-text-fill: #7a7a7a; -fx-border-color: #e9ecef; -fx-border-width: 2; -fx-padding: 8 15; -fx-background-radius: 10; -fx-border-radius: 10; -fx-font-size: 12px; -fx-cursor: hand;"/>
+            <Button onAction="#actualizarEnvios" text="🔄 Actualizar"
+                    style="-fx-background-color: transparent; -fx-text-fill: #7a7a7a; -fx-border-color: #e9ecef; -fx-border-width: 2; -fx-padding: 8 15; -fx-background-radius: 10; -fx-border-radius: 10; -fx-font-size: 12px; -fx-cursor: hand;"/>
+        </HBox>
+    </VBox>
+
+    <!-- Tabla de envíos -->
+    <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);">
+        <Label text="📋 Mis Envíos" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;"/>
+        <TableView fx:id="tablaEnvios" style="-fx-font-size: 13px; -fx-background-color: transparent;">
+            <columns>
+                <TableColumn fx:id="colIdEnvio" text="📄 ID" prefWidth="100.0" style="-fx-font-weight: bold;"/>
+                <TableColumn fx:id="colOrigen" text="📍 Origen" prefWidth="180.0" />
+                <TableColumn fx:id="colDestino" text="🎯 Destino" prefWidth="180.0" />
+                <TableColumn fx:id="colEstado" text="📊 Estado" prefWidth="120.0" />
+                <TableColumn fx:id="colCosto" text="💰 Costo" prefWidth="100.0" />
+                <TableColumn fx:id="colFechaCreacion" text="📅 Fecha" prefWidth="140.0" />
+                <TableColumn fx:id="colAcciones" text="⚡ Acciones" prefWidth="100.0" />
+            </columns>
+        </TableView>
+        <HBox spacing="15" alignment="CENTER_RIGHT">
+            <Button onAction="#descargarReporteCSV" text="📊 Descargar CSV"
+                    style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px; -fx-padding: 10 20; -fx-background-radius: 10; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(39,174,96,0.3), 10, 0, 0, 3);"/>
+            <Button onAction="#descargarReportePDF" text="📄 Descargar PDF"
+                    style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px; -fx-padding: 10 20; -fx-background-radius: 10; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(231,76,60,0.3), 10, 0, 0, 3);"/>
+        </HBox>
+    </VBox>
+
+    <!-- Footer -->
+    <HBox alignment="CENTER" style="-fx-padding: 10; -fx-background-color: rgba(43,43,43,0.05); -fx-background-radius: 10;">
+        <Label style="-fx-text-fill: #5a5a5a; -fx-font-size: 11px;"
+               text="© 2025 Urban Express - Consulta tu historial de envíos" />
+    </HBox>
+
+</VBox>

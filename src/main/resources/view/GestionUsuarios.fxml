@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_final_pp.ViewController.GestionUsuariosController" spacing="20.0" alignment="CENTER" prefWidth="800.0" prefHeight="600.0" style="-fx-background-color: #f8f9fa;">
+    <padding>
+        <Insets top="20.0" right="30.0" bottom="20.0" left="30.0" />
+    </padding>
+    <HBox alignment="CENTER_LEFT" spacing="20.0">
+        <Label text="Gestión de Usuarios" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="Volver" onAction="#volverAlMenuPrincipal" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold;" />
+    </HBox>
+    <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+        <VBox spacing="15.0" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2);">
+            <Label text="Agregar/Editar Usuario" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+            <VBox spacing="5.0">
+                <Label text="ID:" style="-fx-text-fill: #34495e; -fx-font-weight: bold;" />
+                <TextField fx:id="txtIdUsuario" editable="false" style="-fx-font-size: 13px;" />
+            </VBox>
+            <VBox spacing="5.0">
+                <Label text="Nombre:" style="-fx-text-fill: #34495e; -fx-font-weight: bold;" />
+                <TextField fx:id="txtNombreUsuario" style="-fx-font-size: 13px;" />
+            </VBox>
+            <VBox spacing="5.0">
+                <Label text="Correo:" style="-fx-text-fill: #34495e; -fx-font-weight: bold;" />
+                <TextField fx:id="txtCorreoUsuario" style="-fx-font-size: 13px;" />
+            </VBox>
+            <VBox spacing="5.0">
+                <Label text="Teléfono:" style="-fx-text-fill: #34495e; -fx-font-weight: bold;" />
+                <TextField fx:id="txtTelefonoUsuario" style="-fx-font-size: 13px;" />
+            </VBox>
+            <HBox spacing="10.0" alignment="CENTER_RIGHT">
+                <Button fx:id="btnAgregarUsuario" onAction="#agregarUsuario" text="Agregar" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;" />
+                <Button fx:id="btnActualizarUsuario" onAction="#actualizarUsuario" text="Actualizar" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;" />
+                <Button fx:id="btnLimpiarFormulario" onAction="#limpiarFormulario" text="Limpiar" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold;" />
+            </HBox>
+        </VBox>
+        <VBox spacing="15.0" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2);">
+            <Label text="Usuarios Existentes" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+            <TableView fx:id="tablaUsuarios" style="-fx-font-size: 13px;">
+                <columns>
+                    <TableColumn fx:id="colIdUsuario" text="ID" prefWidth="100.0" />
+                    <TableColumn fx:id="colNombreUsuario" text="Nombre" prefWidth="150.0" />
+                    <TableColumn fx:id="colCorreoUsuario" text="Correo" prefWidth="200.0" />
+                    <TableColumn fx:id="colTelefonoUsuario" text="Teléfono" prefWidth="150.0" />
+                    <TableColumn fx:id="colAccionesUsuario" text="Acciones" prefWidth="100.0" />
+                </columns>
+            </TableView>
+        </VBox>
+    </HBox>
+</VBox>

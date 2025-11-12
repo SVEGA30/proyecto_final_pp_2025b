@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+
+<VBox alignment="CENTER" prefHeight="600.0" prefWidth="900.0" spacing="0.0" style="-fx-background-color: linear-gradient(to bottom right, #ffd500, #ffed4e);" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_final_pp.ViewController.UsuarioMainController">
+
+    <HBox alignment="CENTER" spacing="40.0" style="-fx-padding: 40;">
+
+        <!-- Sección izquierda - Información del usuario -->
+        <VBox alignment="CENTER" prefWidth="400.0" spacing="20.0">
+            <VBox alignment="CENTER" spacing="15.0">
+                <!-- Logo principal -->
+                <VBox alignment="CENTER" prefHeight="87.0" prefWidth="429.0" spacing="8.0">
+                    <Label style="-fx-font-family: 'Arial Rounded MT Bold'; -fx-font-weight: bold; -fx-font-size: 28px; -fx-text-fill: #2b2b2b;" text="URBAN EXPRESS">
+                        <font>
+                            <Font name="Berlin Sans FB" size="9.0" />
+                        </font>
+                    </Label>
+                    <Label style="-fx-font-size: 14px; -fx-text-fill: #5a5a5a; -fx-letter-spacing: 2px;" text="ENTREGAS SAME-DAY">
+                        <font>
+                            <Font name="BohemeFloral" size="12.0" />
+                        </font>
+                    </Label>
+                </VBox>
+
+                <!-- Información del usuario -->
+                <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: rgba(255,255,255,0.3); -fx-background-radius: 15; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 3);">
+                    <Label fx:id="lblBienvenida" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b; -fx-wrap-text: true; -fx-text-alignment: center;" text="¡Bienvenido!" />
+                    <Label fx:id="lblInfoUsuario" style="-fx-font-size: 14px; -fx-text-fill: #5a5a5a; -fx-wrap-text: true; -fx-text-alignment: center;" text="Gestiona tus envíos de forma rápida" />
+                    <Label fx:id="lblIdUsuario" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b; -fx-background-color: rgba(255,255,255,0.5); -fx-background-radius: 10; -fx-padding: 8 15;" text="ID: ---" />
+
+                    <!-- Botón de actualizar estadísticas -->
+                    <Button onAction="#actualizarEstadisticasBtn" style="-fx-background-color: rgba(43,43,43,0.8); -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 5 15; -fx-background-radius: 8;" text="Actualizar Información" />
+                </VBox>
+
+                <!-- Elementos decorativos -->
+                <VBox alignment="CENTER" spacing="10.0" style="-fx-padding: 20 0 0 0;">
+                    <HBox alignment="CENTER" spacing="15.0">
+                        <VBox alignment="CENTER" style="-fx-background-color: rgba(255,255,255,0.3); -fx-background-radius: 10; -fx-padding: 8;">
+                            <Label style="-fx-font-size: 20px;" text="🚚" />
+                        </VBox>
+                        <VBox alignment="CENTER" style="-fx-background-color: rgba(255,255,255,0.3); -fx-background-radius: 10; -fx-padding: 8;">
+                            <Label style="-fx-font-size: 20px;" text="📦" />
+                        </VBox>
+                        <VBox alignment="CENTER" style="-fx-background-color: rgba(255,255,255,0.3); -fx-background-radius: 10; -fx-padding: 8;">
+                            <Label style="-fx-font-size: 20px;" text="⚡" />
+                        </VBox>
+                    </HBox>
+                    <Label style="-fx-text-fill: #5a5a5a; -fx-font-size: 13px; -fx-font-style: italic;" text="Gestión rápida y eficiente de tus envíos" />
+                </VBox>
+            </VBox>
+        </VBox>
+
+        <!-- Sección derecha - Panel de control -->
+        <VBox alignment="CENTER" prefWidth="380.0" spacing="25.0">
+            <VBox alignment="CENTER" spacing="25.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 40 35 35 35; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);">
+
+                <VBox alignment="CENTER_LEFT" spacing="5.0">
+                    <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;" text="Panel de Control" />
+                    <Label style="-fx-font-size: 14px; -fx-text-fill: #7a7a7a;" text="Gestiona tus envíos y servicios" />
+                </VBox>
+
+                <!-- Tarjetas de funcionalidades -->
+                <VBox prefWidth="300.0" spacing="15.0">
+                    <!-- Tarjeta 1: Nuevo Envío -->
+                    <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 12; -fx-padding: 15; -fx-cursor: hand;" onMouseClicked="#crearNuevoEnvio">
+                        <VBox alignment="CENTER" spacing="5.0">
+                            <Label style="-fx-font-size: 20px;" text="📦" />
+                        </VBox>
+                        <VBox spacing="3.0">
+                            <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;" text="Nuevo Envío" />
+                            <Label style="-fx-font-size: 12px; -fx-text-fill: #7a7a7a;" text="Crear un nuevo pedido de envío" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Tarjeta 2: Mis Envíos -->
+                    <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 12; -fx-padding: 15; -fx-cursor: hand;" onMouseClicked="#verMisEnvios">
+                        <VBox alignment="CENTER" spacing="5.0">
+                            <Label style="-fx-font-size: 20px;" text="📋" />
+                        </VBox>
+                        <VBox spacing="3.0">
+                            <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;" text="Mis Envíos" />
+                            <Label style="-fx-font-size: 12px; -fx-text-fill: #7a7a7a;" text="Ver el estado de tus envíos" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Tarjeta 3: Historial -->
+                    <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 12; -fx-padding: 15; -fx-cursor: hand;" onMouseClicked="#verHistorial">
+                        <VBox alignment="CENTER" spacing="5.0">
+                            <Label style="-fx-font-size: 20px;" text="📊" />
+                        </VBox>
+                        <VBox spacing="3.0">
+                            <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;" text="Historial" />
+                            <Label style="-fx-font-size: 12px; -fx-text-fill: #7a7a7a;" text="Consultar envíos anteriores" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Tarjeta 4: Gestionar Direcciones -->
+                    <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 12; -fx-padding: 15; -fx-cursor: hand;" onMouseClicked="#gestionarDirecciones">
+                        <VBox alignment="CENTER" spacing="5.0">
+                            <Label style="-fx-font-size: 20px;" text="🏠" />
+                        </VBox>
+                        <VBox spacing="3.0">
+                            <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;" text="Direcciones" />
+                            <Label style="-fx-font-size: 12px; -fx-text-fill: #7a7a7a;" text="Gestionar mis direcciones" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Botones de acción -->
+                <VBox alignment="CENTER" prefWidth="300.0" spacing="10.0">
+                    <Button onAction="#crearNuevoEnvio" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 300; -fx-pref-height: 45; -fx-background-radius: 12; -fx-font-size: 14px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);" text="Crear Nuevo Envío" />
+
+                    <Button onAction="#cerrarSesion" style="-fx-background-color: transparent; -fx-text-fill: #7a7a7a; -fx-border-color: #e9ecef; -fx-border-width: 2; -fx-pref-width: 300; -fx-pref-height: 40; -fx-background-radius: 12; -fx-border-radius: 12; -fx-font-size: 13px; -fx-cursor: hand;" text="Cerrar Sesión" />
+                </VBox>
+
+                <!-- Información rápida -->
+                <VBox spacing="8.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 10; -fx-padding: 15; -fx-max-width: 300;">
+                    <Label style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;" text="📞 Soporte al Cliente" />
+                    <Label style="-fx-font-size: 12px; -fx-text-fill: #7a7a7a;" text="Línea gratuita: 01-8000-123456" />
+                    <Label style="-fx-font-size: 12px; -fx-text-fill: #7a7a7a;" text="Email: soporte@urbanexpress.com" />
+                </VBox>
+            </VBox>
+        </VBox>
+    </HBox>
+
+    <!-- Footer -->
+    <HBox alignment="CENTER" style="-fx-padding: 20; -fx-background-color: rgba(43,43,43,0.05);">
+        <Label style="-fx-text-fill: #5a5a5a; -fx-font-size: 12px;" text="© 2025 Urban Express - Grupo De Logística Avanzada" />
+    </HBox>
+
+</VBox>

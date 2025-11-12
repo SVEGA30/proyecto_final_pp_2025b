@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_final_pp.ViewController.TodosLosEnviosController" spacing="20.0" alignment="CENTER" prefWidth="900.0" prefHeight="700.0" style="-fx-background-color: #f8f9fa;">
+    <padding>
+        <Insets top="20.0" right="30.0" bottom="20.0" left="30.0" />
+    </padding>
+    <HBox alignment="CENTER_LEFT" spacing="20.0">
+        <Label text="Todos los Envíos" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="Volver" onAction="#volverAlMenuPrincipal" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold;" />
+    </HBox>
+    <!-- Filtros -->
+    <VBox spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2);">
+        <Label text="Filtrar Envíos" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+        <HBox spacing="15.0" alignment="CENTER_LEFT">
+            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                <Label text="Estado:" style="-fx-text-fill: #34495e; -fx-font-weight: bold;" />
+                <ComboBox fx:id="cbFiltroEstado" promptText="Todos los estados" style="-fx-font-size: 13px;" />
+            </VBox>
+            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                <Label text="Fecha Desde:" style="-fx-text-fill: #34495e; -fx-font-weight: bold;" />
+                <DatePicker fx:id="dpFiltroDesde" style="-fx-font-size: 13px;" />
+            </VBox>
+            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                <Label text="Fecha Hasta:" style="-fx-text-fill: #34495e; -fx-font-weight: bold;" />
+                <DatePicker fx:id="dpFiltroHasta" style="-fx-font-size: 13px;" />
+            </VBox>
+            <Button onAction="#aplicarFiltros" text="Aplicar Filtros" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px;" />
+        </HBox>
+    </VBox>
+    <VBox spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2);" VBox.vgrow="ALWAYS">
+        <Label text="Envíos" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+        <TableView fx:id="tablaTodosEnvios" style="-fx-font-size: 13px;">
+            <columns>
+                <TableColumn fx:id="colIdEnvioTabla" text="ID" prefWidth="100.0" />
+                <TableColumn fx:id="colIdUsuarioTabla" text="ID Usuario" prefWidth="120.0" />
+                <TableColumn fx:id="colOrigenTabla" text="Origen" prefWidth="180.0" />
+                <TableColumn fx:id="colDestinoTabla" text="Destino" prefWidth="180.0" />
+                <TableColumn fx:id="colEstadoTabla" text="Estado" prefWidth="120.0" />
+                <TableColumn fx:id="colCostoTabla" text="Costo" prefWidth="100.0" />
+                <TableColumn fx:id="colFechaCreacionTabla" text="Fecha Creación" prefWidth="150.0" />
+                <TableColumn fx:id="colAccionesTabla" text="Acciones" prefWidth="100.0" />
+            </columns>
+        </TableView>
+    </VBox>
+</VBox>

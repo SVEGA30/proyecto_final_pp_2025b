@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="proyecto_final_pp.ViewController.EnviosPendientesController"
+      spacing="20" alignment="CENTER" prefWidth="900" prefHeight="650"
+      style="-fx-background-color: linear-gradient(to bottom right, #ffd500, #ffed4e);">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- Header -->
+    <HBox spacing="20" alignment="CENTER_LEFT">
+        <VBox spacing="5">
+            <Label text="URBAN EXPRESS" style="-fx-font-family: 'Arial Rounded MT Bold'; -fx-font-weight: bold; -fx-font-size: 24px; -fx-text-fill: #2b2b2b;"/>
+            <Label text="ENVÍOS PENDIENTES DE ASIGNACIÓN" style="-fx-font-size: 12px; -fx-text-fill: #5a5a5a; -fx-letter-spacing: 1px;"/>
+        </VBox>
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="🏠 Volver" onAction="#volverAlMenuPrincipal"
+                style="-fx-background-color: transparent; -fx-text-fill: #2b2b2b; -fx-font-weight: bold; -fx-font-size: 13px; -fx-cursor: hand; -fx-padding: 8 15;"/>
+    </HBox>
+
+    <!-- Panel de Control -->
+    <HBox spacing="15" alignment="CENTER">
+        <Button onAction="#actualizarLista" text="🔄 Actualizar Lista"
+                style="-fx-background-color: transparent; -fx-text-fill: #7a7a7a; -fx-border-color: #e9ecef; -fx-border-width: 2; -fx-padding: 8 15; -fx-background-radius: 10; -fx-border-radius: 10; -fx-font-size: 12px; -fx-cursor: hand;"/>
+        <Button onAction="#asignarTodosAutomaticamente" text="⚡ Asignar Todos"
+                style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 10; -fx-font-size: 12px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);"/>
+    </HBox>
+
+    <!-- Tabla de envíos pendientes -->
+    <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);">
+        <Label text="📦 Envíos Pendientes de Asignación" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;"/>
+        <TableView fx:id="tablaEnviosPendientes" style="-fx-font-size: 13px; -fx-background-color: transparent;">
+            <columns>
+                <TableColumn fx:id="colIdEnvio" text="📄 ID Envío" prefWidth="120.0" />
+                <TableColumn fx:id="colIdUsuario" text="👤 ID Usuario" prefWidth="120.0" />
+                <TableColumn fx:id="colOrigen" text="📍 Origen" prefWidth="180.0" />
+                <TableColumn fx:id="colDestino" text="🎯 Destino" prefWidth="180.0" />
+                <TableColumn fx:id="colEstado" text="📊 Estado" prefWidth="120.0" />
+                <TableColumn fx:id="colCosto" text="💰 Costo" prefWidth="100.0" />
+                <TableColumn fx:id="colAcciones" text="⚡ Acciones" prefWidth="120.0" />
+            </columns>
+        </TableView>
+    </VBox>
+
+    <!-- Información -->
+    <VBox spacing="8" alignment="CENTER" style="-fx-background-color: rgba(255,255,255,0.3); -fx-background-radius: 15; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 3);">
+        <Label text="💡 Información" style="-fx-font-weight: bold; -fx-text-fill: #2b2b2b;"/>
+        <Label text="Los envíos en estado 'SOLICITADO' están pendientes de asignación a repartidores."
+               style="-fx-text-fill: #5a5a5a; -fx-font-size: 12px; -fx-wrap-text: true; -fx-text-alignment: center;"/>
+    </VBox>
+
+    <!-- Footer -->
+    <HBox alignment="CENTER" style="-fx-padding: 10; -fx-background-color: rgba(43,43,43,0.05); -fx-background-radius: 10;">
+        <Label style="-fx-text-fill: #5a5a5a; -fx-font-size: 11px;"
+               text="© 2025 Urban Express - Gestión de Envíos Pendientes" />
+    </HBox>
+
+</VBox>

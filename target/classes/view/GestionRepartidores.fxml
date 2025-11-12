@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="proyecto_final_pp.ViewController.GestionRepartidoresController"
+      spacing="20" alignment="TOP_CENTER" prefWidth="1000" prefHeight="700"
+      style="-fx-background-color: #f8f9fa;">
+
+    <padding>
+        <Insets top="20" bottom="20" left="30" right="30"/>
+    </padding>
+
+    <!-- Header -->
+    <HBox spacing="20" alignment="CENTER_LEFT">
+        <VBox>
+            <Label text="🚚 Gestión de Repartidores" style="-fx-text-fill: #2c3e50;">
+                <font>
+                    <Font name="System Bold" size="24.0" />
+                </font>
+            </Label>
+            <Label text="Administre los repartidores del sistema" style="-fx-text-fill: #7f8c8d;">
+                <font>
+                    <Font name="System" size="12.0" />
+                </font>
+            </Label>
+        </VBox>
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="Volver al Menú" onAction="#volverAlMenuPrincipal"
+                style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold;">
+            <padding>
+                <Insets top="8" right="15" bottom="8" left="15"/>
+            </padding>
+        </Button>
+    </HBox>
+
+    <!-- Formulario de Repartidor -->
+    <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2);">
+        <Label text="📝 Datos del Repartidor" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+        <GridPane hgap="15" vgap="12">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="150" />
+                <ColumnConstraints prefWidth="250" />
+                <ColumnConstraints prefWidth="150" />
+                <ColumnConstraints prefWidth="250" />
+            </columnConstraints>
+
+            <!-- Fila 1 -->
+            <Label text="ID Repartidor:" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                   style="-fx-text-fill: #34495e; -fx-font-weight: bold;"/>
+            <TextField fx:id="txtIdRepartidor" promptText="Auto-generado" editable="false"
+                       GridPane.columnIndex="1" GridPane.rowIndex="0"
+                       style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;"/>
+
+            <Label text="Nombre:" GridPane.columnIndex="2" GridPane.rowIndex="0"
+                   style="-fx-text-fill: #34495e; -fx-font-weight: bold;"/>
+            <TextField fx:id="txtNombreRepartidor" promptText="Nombre completo"
+                       GridPane.columnIndex="3" GridPane.rowIndex="0"
+                       style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;"/>
+
+            <!-- Fila 2 -->
+            <Label text="Documento:" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                   style="-fx-text-fill: #34495e; -fx-font-weight: bold;"/>
+            <TextField fx:id="txtDocumentoRepartidor" promptText="Número de documento"
+                       GridPane.columnIndex="1" GridPane.rowIndex="1"
+                       style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;"/>
+
+            <Label text="Teléfono:" GridPane.columnIndex="2" GridPane.rowIndex="1"
+                   style="-fx-text-fill: #34495e; -fx-font-weight: bold;"/>
+            <TextField fx:id="txtTelefonoRepartidor" promptText="10 dígitos"
+                       GridPane.columnIndex="3" GridPane.rowIndex="1"
+                       style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;"/>
+
+            <!-- Fila 3 -->
+            <Label text="Zona Cobertura:" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                   style="-fx-text-fill: #34495e; -fx-font-weight: bold;"/>
+            <TextField fx:id="txtZonaCobertura" promptText="Ej: Chapinero, Usaquén..."
+                       GridPane.columnIndex="1" GridPane.rowIndex="2"
+                       style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;"/>
+
+            <Label text="Disponibilidad:" GridPane.columnIndex="2" GridPane.rowIndex="2"
+                   style="-fx-text-fill: #34495e; -fx-font-weight: bold;"/>
+            <ComboBox fx:id="cbDisponibilidadRepartidor"
+                      GridPane.columnIndex="3" GridPane.rowIndex="2"
+                      style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;"/>
+        </GridPane>
+
+        <!-- Botones del Formulario -->
+        <HBox spacing="15" alignment="CENTER_RIGHT">
+            <Button fx:id="btnLimpiarFormulario" text="🔄 Limpiar" onAction="#limpiarFormulario"
+                    style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20;"/>
+            <Button fx:id="btnAgregarRepartidor" text="➕ Agregar" onAction="#agregarRepartidor"
+                    style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20;"/>
+            <Button fx:id="btnActualizarRepartidor" text="✏️ Actualizar" onAction="#actualizarRepartidor"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20;"/>
+        </HBox>
+    </VBox>
+
+    <!-- Tabla de Repartidores -->
+    <VBox spacing="10" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2);">
+        <Label text="📋 Lista de Repartidores" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        <TableView fx:id="tablaRepartidores" style="-fx-font-size: 13px;" prefHeight="300">
+            <columns>
+                <TableColumn fx:id="colIdRepartidor" text="ID" prefWidth="100" />
+                <TableColumn fx:id="colNombreRepartidor" text="Nombre" prefWidth="200" />
+                <TableColumn fx:id="colDocumentoRepartidor" text="Documento" prefWidth="120" />
+                <TableColumn fx:id="colTelefonoRepartidor" text="Teléfono" prefWidth="120" />
+                <TableColumn fx:id="colZonaCobertura" text="Zona Cobertura" prefWidth="150" />
+                <TableColumn fx:id="colDisponibilidadRepartidor" text="Disponibilidad" prefWidth="120" />
+                <TableColumn fx:id="colAccionesRepartidor" text="Acciones" prefWidth="150" />
+            </columns>
+        </TableView>
+    </VBox>
+
+</VBox>
