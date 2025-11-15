@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="600" prefWidth="800" spacing="20" style="-fx-background-color: linear-gradient(to bottom right, #ffd500, #ffed4e);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_final_pp.ViewController.GestionDireccionesController">
+<VBox alignment="CENTER" prefHeight="743.0" prefWidth="800" spacing="20" style="-fx-background-color: linear-gradient(to bottom right, #ffd500, #ffed4e);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_final_pp.ViewController.GestionDireccionesController">
 
     <padding>
         <Insets bottom="20" left="30" right="30" top="20" />
@@ -62,12 +62,12 @@
     </VBox>
 
     <!-- Lista de direcciones existentes -->
-    <VBox spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);" VBox.vgrow="ALWAYS">
+    <VBox prefHeight="262.0" prefWidth="739.0" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);" VBox.vgrow="ALWAYS">
         <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;" text="🏠 Direcciones Frecuentes" />
 
         <!-- Contenedor para la tabla con tamaño fijo -->
         <VBox spacing="0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
-         <TableView fx:id="tablaDirecciones" prefHeight="108.0" prefWidth="690.0" style="-fx-font-size: 13px; -fx-background-color: transparent; -fx-table-cell-border-color: transparent;">
+         <TableView fx:id="tablaDirecciones" prefHeight="138.0" prefWidth="690.0" style="-fx-font-size: 13px; -fx-background-color: transparent; -fx-table-cell-border-color: transparent;">
              <columns>
                  <TableColumn fx:id="colAlias" prefWidth="150.0" text="📝 Alias" />
                  <TableColumn fx:id="colDireccion" prefWidth="300.0" text="📍 Dirección" />
