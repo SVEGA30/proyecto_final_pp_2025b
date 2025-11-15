@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<?import java.lang.String?>
 <VBox alignment="CENTER" prefHeight="600" prefWidth="800" spacing="20" style="-fx-background-color: linear-gradient(to bottom right, #ffd500, #ffed4e);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_final_pp.ViewController.GestionDireccionesController">
 
     <padding>
@@ -39,6 +38,11 @@
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
+
             <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
                 <Label style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;" text="Alias:" />
                 <TextField fx:id="txtNuevoAlias" promptText="Casa, Oficina, etc." style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 10; -fx-font-size: 13px;" />
@@ -51,10 +55,6 @@
                 <Label style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;" text="Calle:" />
                 <TextField fx:id="txtNuevaCalle" promptText="Calle, Número, Ciudad" style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 10; -fx-font-size: 13px;" />
             </VBox>
-            <rowConstraints>
-                <RowConstraints />
-                <RowConstraints />
-            </rowConstraints>
         </GridPane>
         <HBox alignment="CENTER_RIGHT" spacing="10">
             <Button fx:id="btnAgregarDireccion" onAction="#agregarDireccion" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 10; -fx-font-size: 13px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);" text="➕ Agregar Dirección" />
@@ -62,22 +62,19 @@
     </VBox>
 
     <!-- Lista de direcciones existentes -->
-    <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);" VBox.vgrow="ALWAYS">
+    <VBox spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);" VBox.vgrow="ALWAYS">
         <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;" text="🏠 Direcciones Frecuentes" />
-        <TableView fx:id="tablaDirecciones" style="-fx-font-size: 13px; -fx-background-color: transparent;" VBox.vgrow="ALWAYS">
-            <columns>
-                <TableColumn fx:id="colAlias" prefWidth="150.0" text="📝 Alias" />
-                <TableColumn fx:id="colDireccion" prefWidth="300.0" text="📍 Dirección" />
-                <TableColumn fx:id="colZona" prefWidth="150.0" text="🗺️ Zona" />
-                <TableColumn fx:id="colAcciones" prefWidth="150.0" text="⚡ Acciones" />
-            </columns>
 
-            <!-- Estilos personalizados para la barra de desplazamiento -->
-            <styleClass>
-                <String fx:value="custom-table-view" />
-            </styleClass>
-        </TableView>
-        <Label fx:id="lblInfoDireccionSeleccionada" style="-fx-text-fill: #5a5a5a; -fx-font-size: 12px; -fx-font-style: italic;" />
+        <!-- Contenedor para la tabla con tamaño fijo -->
+        <VBox spacing="0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
+         <TableView fx:id="tablaDirecciones" prefHeight="108.0" prefWidth="690.0" style="-fx-font-size: 13px; -fx-background-color: transparent; -fx-table-cell-border-color: transparent;">
+             <columns>
+                 <TableColumn fx:id="colAlias" prefWidth="150.0" text="📝 Alias" />
+                 <TableColumn fx:id="colDireccion" prefWidth="300.0" text="📍 Dirección" />
+                 <TableColumn fx:id="colZona" prefWidth="150.0" text="🗺️ Zona" />
+                 <TableColumn fx:id="colAcciones" prefWidth="120.0" text="⚡ Acciones" />
+             </columns>
+         </TableView>
         <HBox alignment="CENTER_RIGHT" spacing="10">
             <Button onAction="#actualizarDirecciones" style="-fx-background-color: transparent; -fx-text-fill: #7a7a7a; -fx-border-color: #e9ecef; -fx-border-width: 2; -fx-padding: 8 15; -fx-background-radius: 10; -fx-border-radius: 10; -fx-font-size: 12px; -fx-cursor: hand;" text="🔄 Actualizar Lista" />
         </HBox>

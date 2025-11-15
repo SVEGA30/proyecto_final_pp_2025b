@@ -50,6 +50,8 @@ public class GestionDireccionesController {
 
             cargarZonasDisponibles();
 
+            System.out.println("GestionDireccionesController inicializado");
+
         } catch (Exception e) {
             System.err.println("Error al inicializar GestionDireccionesController: " + e.getMessage());
             e.printStackTrace();
@@ -81,6 +83,9 @@ public class GestionDireccionesController {
         });
 
         tablaDirecciones.setItems(direccionesObservable);
+
+        // Configurar estilo para evitar problemas de scrollbar
+        tablaDirecciones.setStyle("-fx-padding: 0; -fx-background-color: transparent;");
     }
 
     private void configurarListeners() {
@@ -99,10 +104,10 @@ public class GestionDireccionesController {
     }
 
     public void setUsuarioActual(UsuarioDTO usuarioDTO) {
+        System.out.println("setUsuarioActual llamado con: " + (usuarioDTO != null ? usuarioDTO.getNombre() : "null"));
         this.usuarioActualDTO = usuarioDTO;
         if (usuarioDTO != null) {
             cargarDireccionesUsuario();
-            cargarZonasDisponibles();
             actualizarInterfazUsuario();
         }
     }
@@ -116,13 +121,24 @@ public class GestionDireccionesController {
     private void cargarDireccionesUsuario() {
         try {
             if (usuarioActualDTO != null) {
+                System.out.println("Cargando direcciones para usuario: " + usuarioActualDTO.getNombre());
                 List<DireccionDTO> direcciones = logisticaFacade.obtenerDireccionesFrecuentes(usuarioActualDTO);
+                System.out.println("Direcciones obtenidas: " + (direcciones != null ? direcciones.size() : "null"));
+
                 if (direcciones != null) {
                     direccionesObservable.setAll(direcciones);
+                    System.out.println("Tabla actualizada con " + direcciones.size() + " direcciones");
+
+                    // Debug: mostrar direcciones cargadas
+                    direcciones.forEach(dir ->
+                            System.out.println(" - " + dir.getAlias() + ": " + dir.getCalle())
+                    );
                 } else {
                     direccionesObservable.clear();
                     System.out.println("No se encontraron direcciones para el usuario");
                 }
+            } else {
+                System.out.println("Usuario actual es null, no se pueden cargar direcciones");
             }
         } catch (Exception e) {
             System.err.println("Error al cargar direcciones del usuario: " + e.getMessage());
@@ -134,8 +150,11 @@ public class GestionDireccionesController {
     private void cargarZonasDisponibles() {
         try {
             List<ZonaDTO> zonas = logisticaFacade.obtenerTodasZonas();
+            System.out.println("Zonas cargadas: " + (zonas != null ? zonas.size() : "null"));
+
             if (zonas != null && !zonas.isEmpty()) {
                 cbNuevaZona.setItems(FXCollections.observableArrayList(zonas));
+                System.out.println("ComboBox de zonas cargado con " + zonas.size() + " zonas");
             } else {
                 System.err.println("No se encontraron zonas disponibles");
                 mostrarError("No hay zonas disponibles para seleccionar");
@@ -187,14 +206,23 @@ public class GestionDireccionesController {
             nuevaDireccionDTO.setZona(zona.getNombre());
             nuevaDireccionDTO.setAlias(alias);
 
+            System.out.println("Intentando agregar dirección:");
+            System.out.println(" - Alias: " + alias);
+            System.out.println(" - Calle: " + calle);
+            System.out.println(" - Zona: " + zona.getNombre());
+            System.out.println(" - Usuario: " + (usuarioActualDTO != null ? usuarioActualDTO.getNombre() : "null"));
+
             // Agregar la dirección al usuario actual usando la fachada
             boolean agregada = logisticaFacade.agregarDireccionFrecuente(usuarioActualDTO, nuevaDireccionDTO);
 
             if (agregada) {
+                System.out.println("✅ Dirección agregada exitosamente en la base de datos");
                 mostrarExito("Dirección '" + alias + "' agregada exitosamente.");
                 limpiarFormulario();
+                // Recargar direcciones desde la base de datos
                 cargarDireccionesUsuario();
             } else {
+                System.out.println("❌ No se pudo agregar la dirección en la base de datos");
                 mostrarError("No se pudo agregar la dirección. Verifique los datos.");
             }
 
@@ -207,7 +235,7 @@ public class GestionDireccionesController {
 
     private boolean existeDireccionConAlias(String alias) {
         return direccionesObservable.stream()
-                .anyMatch(dir -> dir.getAlias().equalsIgnoreCase(alias));
+                .anyMatch(dir -> dir.getAlias() != null && dir.getAlias().equalsIgnoreCase(alias));
     }
 
     private void limpiarFormulario() {
@@ -283,6 +311,7 @@ public class GestionDireccionesController {
 
     @FXML
     private void actualizarDirecciones() {
+        System.out.println("Actualizando direcciones manualmente...");
         cargarDireccionesUsuario();
         mostrarInfo("Direcciones actualizadas correctamente.");
     }
@@ -321,7 +350,7 @@ public class GestionDireccionesController {
             this.btnEliminar = new Button("Eliminar");
 
             // Estilizar botón
-            btnEliminar.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5 10; -fx-background-radius: 5;");
+            btnEliminar.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5 10; -fx-background-radius: 5; -fx-font-size: 11px;");
             btnEliminar.setOnAction(event -> {
                 DireccionDTO direccion = getTableView().getItems().get(getIndex());
                 if (direccion != null) {
