@@ -93,7 +93,36 @@ public class UsuarioMainController {
 
     @FXML
     private void gestionarDirecciones() {
-        cargarVentana("/view/GestionDirecciones.fxml", "Gestionar Direcciones - Urban Express");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/GestionDirecciones.fxml"));
+            Parent root = loader.load();
+
+            // OBTENER EL CONTROLADOR ESPECÍFICAMENTE PARA GESTIÓN DE DIRECCIONES
+            GestionDireccionesController controller = loader.getController();
+            if (controller != null) {
+                System.out.println("Estableciendo usuario en GestionDireccionesController: " +
+                        (usuarioActualDTO != null ? usuarioActualDTO.getNombre() : "null"));
+                controller.setUsuarioActual(usuarioActualDTO);
+            } else {
+                System.err.println("No se pudo obtener el controlador de GestionDirecciones");
+            }
+
+            Scene scene = new Scene(root);
+            Stage stage = getCurrentStage();
+            if (stage != null) {
+                stage.setScene(scene);
+                stage.setTitle("Gestionar Direcciones - Urban Express");
+                stage.centerOnScreen();
+            } else {
+                mostrarError("No se pudo obtener la ventana actual");
+            }
+        } catch (IOException e) {
+            mostrarError("Error al cargar gestión de direcciones: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            mostrarError("Error inesperado: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML

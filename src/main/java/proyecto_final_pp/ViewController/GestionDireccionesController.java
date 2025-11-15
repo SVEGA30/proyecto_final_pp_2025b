@@ -48,6 +48,8 @@ public class GestionDireccionesController {
             // Configurar listeners
             configurarListeners();
 
+            cargarZonasDisponibles();
+
         } catch (Exception e) {
             System.err.println("Error al inicializar GestionDireccionesController: " + e.getMessage());
             e.printStackTrace();

@@ -5,6 +5,7 @@ import proyecto_final_pp.model.dto.DireccionDTO;
 import proyecto_final_pp.model.dto.ZonaDTO;
 import proyecto_final_pp.util.GestorDatos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DireccionService {
@@ -22,9 +23,18 @@ public class DireccionService {
     }
 
     public List<ZonaDTO> obtenerTodasZonas() {
-        List<ZonaDTO> zonas = gestorDatos.getAllZonas();
-        System.out.println("DireccionService: Obteniendo " + zonas.size() + " zonas");
-        return zonas;
+        try {
+            List<ZonaDTO> zonas = gestorDatos.getAllZonas();
+            System.out.println("Zonas cargadas: " + (zonas != null ? zonas.size() : "null"));
+            if (zonas != null) {
+                zonas.forEach(zona -> System.out.println("Zona: " + zona.getNombre()));
+            }
+            return zonas;
+        } catch (Exception e) {
+            System.err.println("Error en obtenerTodasZonas: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
     public boolean agregarDireccionFrecuente(UsuarioDTO usuarioDTO, DireccionDTO nuevaDireccionDTO) {

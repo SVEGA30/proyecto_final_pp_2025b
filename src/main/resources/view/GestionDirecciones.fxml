@@ -1,83 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="proyecto_final_pp.ViewController.GestionDireccionesController"
-      spacing="20" alignment="CENTER" prefWidth="800" prefHeight="600"
-      style="-fx-background-color: linear-gradient(to bottom right, #ffd500, #ffed4e);">
+<?import java.lang.String?>
+<VBox alignment="CENTER" prefHeight="600" prefWidth="800" spacing="20" style="-fx-background-color: linear-gradient(to bottom right, #ffd500, #ffed4e);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_final_pp.ViewController.GestionDireccionesController">
 
     <padding>
-        <Insets top="20" right="30" bottom="20" left="30"/>
+        <Insets bottom="20" left="30" right="30" top="20" />
     </padding>
 
     <!-- Header -->
-    <HBox spacing="20" alignment="CENTER_LEFT">
+    <HBox alignment="CENTER_LEFT" spacing="20">
         <VBox spacing="5">
-            <Label text="URBAN EXPRESS" style="-fx-font-family: 'Arial Rounded MT Bold'; -fx-font-weight: bold; -fx-font-size: 24px; -fx-text-fill: #2b2b2b;"/>
-            <Label text="GESTIÓN DE DIRECCIONES" style="-fx-font-size: 12px; -fx-text-fill: #5a5a5a; -fx-letter-spacing: 1px;"/>
+            <Label style="-fx-font-family: 'Arial Rounded MT Bold'; -fx-font-weight: bold; -fx-font-size: 24px; -fx-text-fill: #2b2b2b;" text="URBAN EXPRESS" />
+            <Label style="-fx-font-size: 12px; -fx-text-fill: #5a5a5a; -fx-letter-spacing: 1px;" text="GESTIÓN DE DIRECCIONES" />
         </VBox>
         <Region HBox.hgrow="ALWAYS" />
-        <Button text="🏠 Volver" onAction="#volverAlMenuPrincipal"
-                style="-fx-background-color: transparent; -fx-text-fill: #2b2b2b; -fx-font-weight: bold; -fx-font-size: 13px; -fx-cursor: hand; -fx-padding: 8 15;"/>
+        <Button onAction="#volverAlMenuPrincipal" style="-fx-background-color: transparent; -fx-text-fill: #2b2b2b; -fx-font-weight: bold; -fx-font-size: 13px; -fx-cursor: hand; -fx-padding: 8 15;" text="🏠 Volver" />
     </HBox>
 
     <!-- Formulario para agregar nueva dirección -->
     <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);">
-        <Label text="📍 Agregar Nueva Dirección" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;"/>
+        <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;" text="📍 Agregar Nueva Dirección" />
         <GridPane hgap="15" vgap="12">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             </columnConstraints>
             <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                <Label text="Alias:" style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;"/>
-                <TextField fx:id="txtNuevoAlias" promptText="Casa, Oficina, etc."
-                           style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 10; -fx-font-size: 13px;"/>
+                <Label style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;" text="Alias:" />
+                <TextField fx:id="txtNuevoAlias" promptText="Casa, Oficina, etc." style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 10; -fx-font-size: 13px;" />
             </VBox>
             <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                <Label text="Zona:" style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;"/>
-                <ComboBox fx:id="cbNuevaZona"
-                          style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 10; -fx-font-size: 13px;"/>
+                <Label style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;" text="Zona:" />
+                <ComboBox fx:id="cbNuevaZona" style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 10; -fx-font-size: 13px;" />
             </VBox>
-            <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
-                <Label text="Calle:" style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;"/>
-                <TextField fx:id="txtNuevaCalle" promptText="Calle, Número, Ciudad"
-                           style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 10; -fx-font-size: 13px;"/>
+            <VBox spacing="5" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                <Label style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;" text="Calle:" />
+                <TextField fx:id="txtNuevaCalle" promptText="Calle, Número, Ciudad" style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 10; -fx-font-size: 13px;" />
             </VBox>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
         </GridPane>
-        <HBox spacing="10" alignment="CENTER_RIGHT">
-            <Button fx:id="btnAgregarDireccion" onAction="#agregarDireccion" text="➕ Agregar Dirección"
-                    style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 10; -fx-font-size: 13px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);"/>
+        <HBox alignment="CENTER_RIGHT" spacing="10">
+            <Button fx:id="btnAgregarDireccion" onAction="#agregarDireccion" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 10; -fx-font-size: 13px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);" text="➕ Agregar Dirección" />
         </HBox>
     </VBox>
 
     <!-- Lista de direcciones existentes -->
-    <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);">
-        <Label text="🏠 Direcciones Frecuentes" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;"/>
-        <TableView fx:id="tablaDirecciones" style="-fx-font-size: 13px; -fx-background-color: transparent;">
+    <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);" VBox.vgrow="ALWAYS">
+        <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;" text="🏠 Direcciones Frecuentes" />
+        <TableView fx:id="tablaDirecciones" style="-fx-font-size: 13px; -fx-background-color: transparent;" VBox.vgrow="ALWAYS">
             <columns>
-                <TableColumn fx:id="colAlias" text="📝 Alias" prefWidth="150.0" />
-                <TableColumn fx:id="colDireccion" text="📍 Dirección" prefWidth="300.0" />
-                <TableColumn fx:id="colZona" text="🗺️ Zona" prefWidth="150.0" />
-                <TableColumn fx:id="colAcciones" text="⚡ Acciones" prefWidth="150.0" />
+                <TableColumn fx:id="colAlias" prefWidth="150.0" text="📝 Alias" />
+                <TableColumn fx:id="colDireccion" prefWidth="300.0" text="📍 Dirección" />
+                <TableColumn fx:id="colZona" prefWidth="150.0" text="🗺️ Zona" />
+                <TableColumn fx:id="colAcciones" prefWidth="150.0" text="⚡ Acciones" />
             </columns>
+
+            <!-- Estilos personalizados para la barra de desplazamiento -->
+            <styleClass>
+                <String fx:value="custom-table-view" />
+            </styleClass>
         </TableView>
-        <Label fx:id="lblInfoDireccionSeleccionada" text="Selecciona una dirección para ver detalles"
-               style="-fx-text-fill: #5a5a5a; -fx-font-size: 12px; -fx-font-style: italic;"/>
-        <HBox spacing="10" alignment="CENTER_RIGHT">
-            <Button onAction="#actualizarDirecciones" text="🔄 Actualizar Lista"
-                    style="-fx-background-color: transparent; -fx-text-fill: #7a7a7a; -fx-border-color: #e9ecef; -fx-border-width: 2; -fx-padding: 8 15; -fx-background-radius: 10; -fx-border-radius: 10; -fx-font-size: 12px; -fx-cursor: hand;"/>
+        <Label fx:id="lblInfoDireccionSeleccionada" style="-fx-text-fill: #5a5a5a; -fx-font-size: 12px; -fx-font-style: italic;" />
+        <HBox alignment="CENTER_RIGHT" spacing="10">
+            <Button onAction="#actualizarDirecciones" style="-fx-background-color: transparent; -fx-text-fill: #7a7a7a; -fx-border-color: #e9ecef; -fx-border-width: 2; -fx-padding: 8 15; -fx-background-radius: 10; -fx-border-radius: 10; -fx-font-size: 12px; -fx-cursor: hand;" text="🔄 Actualizar Lista" />
         </HBox>
     </VBox>
 
     <!-- Footer -->
     <HBox alignment="CENTER" style="-fx-padding: 10; -fx-background-color: rgba(43,43,43,0.05); -fx-background-radius: 10;">
-        <Label style="-fx-text-fill: #5a5a5a; -fx-font-size: 11px;"
-               text="© 2025 Urban Express - Gestión de Direcciones Frecuentes" />
+        <Label style="-fx-text-fill: #5a5a5a; -fx-font-size: 11px;" text="© 2025 Urban Express - Gestión de Direcciones Frecuentes" />
     </HBox>
-
 </VBox>
