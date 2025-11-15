@@ -1,5 +1,6 @@
 package proyecto_final_pp.ViewController;
 
+import javafx.scene.Node;
 import proyecto_final_pp.model.dto.*;
 import proyecto_final_pp.facade.LogisticaFacade;
 import javafx.collections.FXCollections;
@@ -412,6 +413,12 @@ public class EnvioController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/HistorialEnvios.fxml"));
             Parent root = loader.load();
 
+            // PASAR EL USUARIO AL CONTROLADOR DE HISTORIAL
+            HistorialEnviosController controller = loader.getController();
+            if (controller != null) {
+                controller.setUsuarioActual(usuarioActualDTO);
+            }
+
             Scene scene = new Scene(root);
             Stage stage = getCurrentStage();
             if (stage != null) {
@@ -436,6 +443,12 @@ public class EnvioController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/GestionDirecciones.fxml"));
             Parent root = loader.load();
 
+            // PASAR EL USUARIO AL CONTROLADOR DE GESTIÓN DE DIRECCIONES
+            GestionDireccionesController controller = loader.getController();
+            if (controller != null) {
+                controller.setUsuarioActual(usuarioActualDTO);
+            }
+
             Scene scene = new Scene(root);
             Stage stage = getCurrentStage();
             if (stage != null) {
@@ -456,6 +469,7 @@ public class EnvioController {
 
     private Stage getCurrentStage() {
         try {
+            // Intentar con diferentes nodos en orden de prioridad
             if (btnCrearEnvio != null && btnCrearEnvio.getScene() != null) {
                 return (Stage) btnCrearEnvio.getScene().getWindow();
             }
@@ -466,7 +480,14 @@ public class EnvioController {
                 return (Stage) lblInfoUsuario.getScene().getWindow();
             }
 
-            System.err.println("No se pudo obtener el Stage actual");
+            // Si no se pudo obtener de los nodos específicos, buscar cualquier nodo de la escena
+            Node anyNode = cbDireccionesOrigen != null ? cbDireccionesOrigen :
+                    cbDireccionesDestino != null ? cbDireccionesDestino : null;
+            if (anyNode != null && anyNode.getScene() != null) {
+                return (Stage) anyNode.getScene().getWindow();
+            }
+
+            System.err.println("No se pudo obtener el Stage actual desde ningún nodo");
             return null;
         } catch (Exception e) {
             System.err.println("Error al obtener Stage: " + e.getMessage());

@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
+<?import java.lang.String?>
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="proyecto_final_pp.ViewController.HistorialEnviosController"
       spacing="20" alignment="CENTER" prefWidth="900" prefHeight="700"
@@ -59,9 +60,9 @@
     </VBox>
 
     <!-- Tabla de envíos -->
-    <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);">
+    <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);" VBox.vgrow="ALWAYS">
         <Label text="📋 Mis Envíos" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;"/>
-        <TableView fx:id="tablaEnvios" style="-fx-font-size: 13px; -fx-background-color: transparent;">
+        <TableView fx:id="tablaEnvios" style="-fx-font-size: 13px; -fx-background-color: transparent;" VBox.vgrow="ALWAYS">
             <columns>
                 <TableColumn fx:id="colIdEnvio" text="📄 ID" prefWidth="100.0" style="-fx-font-weight: bold;"/>
                 <TableColumn fx:id="colOrigen" text="📍 Origen" prefWidth="180.0" />
@@ -69,9 +70,21 @@
                 <TableColumn fx:id="colEstado" text="📊 Estado" prefWidth="120.0" />
                 <TableColumn fx:id="colCosto" text="💰 Costo" prefWidth="100.0" />
                 <TableColumn fx:id="colFechaCreacion" text="📅 Fecha" prefWidth="140.0" />
-                <TableColumn fx:id="colAcciones" text="⚡ Acciones" prefWidth="100.0" />
+                <TableColumn fx:id="colAcciones" text="⚡ Acciones" prefWidth="120.0" />
             </columns>
+
+            <!-- Estilos para la tabla -->
+            <styleClass>
+                <String fx:value="custom-table-view" />
+            </styleClass>
         </TableView>
+
+        <!-- Contador de resultados -->
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label fx:id="lblContadorResultados" text="Mostrando 0 envíos"
+                   style="-fx-text-fill: #5a5a5a; -fx-font-size: 12px; -fx-font-style: italic;"/>
+        </HBox>
+
         <HBox spacing="15" alignment="CENTER_RIGHT">
             <Button onAction="#descargarReporteCSV" text="📊 Descargar CSV"
                     style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px; -fx-padding: 10 20; -fx-background-radius: 10; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(39,174,96,0.3), 10, 0, 0, 3);"/>

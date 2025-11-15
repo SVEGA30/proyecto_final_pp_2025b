@@ -32,6 +32,7 @@ public class HistorialEnviosController {
     @FXML private TableColumn<EnvioDTO, Double> colCosto;
     @FXML private TableColumn<EnvioDTO, String> colFechaCreacion;
     @FXML private TableColumn<EnvioDTO, Void> colAcciones;
+    @FXML private Label lblContadorResultados;
 
     private LogisticaFacade logisticaFacade;
     private UsuarioDTO usuarioActualDTO;
@@ -52,6 +53,12 @@ public class HistorialEnviosController {
         // Cargar estados posibles en el combo de filtro
         cbFiltroEstado.getItems().addAll("TODOS", "SOLICITADO", "ASIGNADO", "EN_RUTA", "ENTREGADO", "INCIDENCIA", "CANCELADO");
         cbFiltroEstado.setValue("TODOS");
+
+        // Configurar valores por defecto para fechas (últimos 30 días)
+        dpFiltroDesde.setValue(LocalDate.now().minusDays(30));
+        dpFiltroHasta.setValue(LocalDate.now());
+
+        System.out.println("HistorialEnviosController inicializado");
     }
 
     private void configurarColumnasTabla() {
@@ -59,25 +66,54 @@ public class HistorialEnviosController {
 
         colOrigen.setCellValueFactory(cellData -> {
             var dir = cellData.getValue().getDireccionOrigen();
-            return new javafx.beans.property.SimpleStringProperty(dir != null ? dir.getAlias() : "N/A");
+            if (dir != null && dir.getAlias() != null) {
+                return new javafx.beans.property.SimpleStringProperty(dir.getAlias());
+            } else {
+                return new javafx.beans.property.SimpleStringProperty("N/A");
+            }
         });
 
         colDestino.setCellValueFactory(cellData -> {
             var dir = cellData.getValue().getDireccionDestino();
-            return new javafx.beans.property.SimpleStringProperty(dir != null ? dir.getAlias() : "N/A");
+            if (dir != null && dir.getAlias() != null) {
+                return new javafx.beans.property.SimpleStringProperty(dir.getAlias());
+            } else {
+                return new javafx.beans.property.SimpleStringProperty("N/A");
+            }
         });
 
         colEstado.setCellValueFactory(cellData -> {
             var estado = cellData.getValue().getEstadoActual();
-            return new javafx.beans.property.SimpleStringProperty(estado != null ? estado.name() : "N/A");
+            if (estado != null) {
+                return new javafx.beans.property.SimpleStringProperty(estado.name());
+            } else {
+                return new javafx.beans.property.SimpleStringProperty("N/A");
+            }
         });
 
         colCosto.setCellValueFactory(new PropertyValueFactory<>("costo"));
 
+        // Formatear el costo como moneda
+        colCosto.setCellFactory(column -> new TableCell<EnvioDTO, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("$%,.0f", item));
+                }
+            }
+        });
+
         colFechaCreacion.setCellValueFactory(cellData -> {
             var fecha = cellData.getValue().getFechaCreacion();
-            var formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-            return new javafx.beans.property.SimpleStringProperty(fecha != null ? fecha.format(formatter) : "N/A");
+            if (fecha != null) {
+                var formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                return new javafx.beans.property.SimpleStringProperty(fecha.format(formatter));
+            } else {
+                return new javafx.beans.property.SimpleStringProperty("N/A");
+            }
         });
 
         // Configurar columna de acciones
@@ -87,88 +123,146 @@ public class HistorialEnviosController {
     public void setUsuarioActual(UsuarioDTO usuarioDTO) {
         this.usuarioActualDTO = usuarioDTO;
         if (usuarioDTO != null) {
+            System.out.println("Usuario establecido en HistorialEnvios: " + usuarioDTO.getNombre());
             cargarEnviosUsuario();
+        } else {
+            System.err.println("UsuarioDTO es null en setUsuarioActual");
         }
     }
 
     private void cargarEnviosUsuario() {
         if (usuarioActualDTO != null) {
-            List<EnvioDTO> envios = logisticaFacade.getEnviosPorUsuario(usuarioActualDTO);
-            enviosOriginales.setAll(envios);
-            aplicarFiltros();
+            try {
+                System.out.println("Cargando envíos para usuario: " + usuarioActualDTO.getNombre());
+                List<EnvioDTO> envios = logisticaFacade.getEnviosPorUsuario(usuarioActualDTO);
+
+                System.out.println("Envíos encontrados: " + envios.size());
+                envios.forEach(envio -> System.out.println(" - " + envio.getIdEnvio() + " - " + envio.getEstadoActual()));
+
+                enviosOriginales.setAll(envios);
+                aplicarFiltros();
+
+            } catch (Exception e) {
+                System.err.println("Error al cargar envíos del usuario: " + e.getMessage());
+                e.printStackTrace();
+                mostrarError("Error al cargar los envíos: " + e.getMessage());
+            }
+        } else {
+            System.err.println("No hay usuario actual para cargar envíos");
         }
     }
 
     @FXML
     private void aplicarFiltros() {
-        String estadoFiltro = cbFiltroEstado.getValue();
-        LocalDate fechaDesde = dpFiltroDesde.getValue();
-        LocalDate fechaHasta = dpFiltroHasta.getValue();
+        try {
+            String estadoFiltro = cbFiltroEstado.getValue();
+            LocalDate fechaDesde = dpFiltroDesde.getValue();
+            LocalDate fechaHasta = dpFiltroHasta.getValue();
 
-        List<EnvioDTO> filtrados = enviosOriginales.stream()
-                .filter(envio -> {
-                    // Filtro por estado
-                    boolean cumpleEstado = "TODOS".equals(estadoFiltro) ||
-                            envio.getEstadoActual().name().equals(estadoFiltro);
+            System.out.println("Aplicando filtros - Estado: " + estadoFiltro + ", Desde: " + fechaDesde + ", Hasta: " + fechaHasta);
 
-                    // Filtro por fecha
-                    boolean cumpleFecha = true;
-                    if (fechaDesde != null && envio.getFechaCreacion() != null) {
-                        cumpleFecha = envio.getFechaCreacion().toLocalDate().compareTo(fechaDesde) >= 0;
-                    }
-                    if (fechaHasta != null && envio.getFechaCreacion() != null) {
-                        cumpleFecha = cumpleFecha && envio.getFechaCreacion().toLocalDate().compareTo(fechaHasta) <= 0;
-                    }
+            List<EnvioDTO> filtrados = enviosOriginales.stream()
+                    .filter(envio -> {
+                        // Filtro por estado
+                        boolean cumpleEstado = "TODOS".equals(estadoFiltro) ||
+                                (envio.getEstadoActual() != null &&
+                                        envio.getEstadoActual().name().equals(estadoFiltro));
 
-                    return cumpleEstado && cumpleFecha;
-                })
-                .collect(Collectors.toList());
+                        // Filtro por fecha
+                        boolean cumpleFecha = true;
+                        if (fechaDesde != null && envio.getFechaCreacion() != null) {
+                            cumpleFecha = !envio.getFechaCreacion().toLocalDate().isBefore(fechaDesde);
+                        }
+                        if (fechaHasta != null && envio.getFechaCreacion() != null) {
+                            cumpleFecha = cumpleFecha && !envio.getFechaCreacion().toLocalDate().isAfter(fechaHasta);
+                        }
 
-        enviosFiltrados.setAll(filtrados);
+                        return cumpleEstado && cumpleFecha;
+                    })
+                    .collect(Collectors.toList());
 
-        // Mostrar mensaje si no hay resultados
-        if (filtrados.isEmpty()) {
-            mostrarInfo("No se encontraron envíos con los filtros aplicados.");
+            enviosFiltrados.setAll(filtrados);
+            actualizarContadorResultados();
+
+            System.out.println("Filtros aplicados - Resultados: " + filtrados.size());
+
+            // Mostrar mensaje si no hay resultados
+            if (filtrados.isEmpty()) {
+                mostrarInfo("No se encontraron envíos con los filtros aplicados.");
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error al aplicar filtros: " + e.getMessage());
+            e.printStackTrace();
+            mostrarError("Error al aplicar los filtros: " + e.getMessage());
+        }
+    }
+
+    private void actualizarContadorResultados() {
+        if (lblContadorResultados != null) {
+            int total = enviosFiltrados.size();
+            lblContadorResultados.setText("Mostrando " + total + " envío" + (total != 1 ? "s" : ""));
         }
     }
 
     @FXML
     private void limpiarFiltros() {
         cbFiltroEstado.setValue("TODOS");
-        dpFiltroDesde.setValue(null);
-        dpFiltroHasta.setValue(null);
+        dpFiltroDesde.setValue(LocalDate.now().minusDays(30));
+        dpFiltroHasta.setValue(LocalDate.now());
         aplicarFiltros();
+        mostrarInfo("Filtros limpiados correctamente.");
+    }
+
+    @FXML
+    private void actualizarEnvios() {
+        cargarEnviosUsuario();
+        mostrarInfo("Lista de envíos actualizada.");
     }
 
     public void verDetalleEnvio(EnvioDTO envio) {
-        Alert detalle = new Alert(Alert.AlertType.INFORMATION);
-        detalle.setTitle("Detalle del Envío");
-        detalle.setHeaderText("ID: " + envio.getIdEnvio());
+        try {
+            Alert detalle = new Alert(Alert.AlertType.INFORMATION);
+            detalle.setTitle("Detalle del Envío");
+            detalle.setHeaderText("📦 Detalles del Envío " + envio.getIdEnvio());
 
-        StringBuilder contenido = new StringBuilder();
-        contenido.append("Estado: ").append(envio.getEstadoActual().name()).append("\n")
-                .append("Costo: $").append(String.format("%.2f", envio.getCosto())).append("\n")
-                .append("Peso: ").append(envio.getPeso()).append(" kg\n")
-                .append("Volumen: ").append(envio.getVolumen()).append(" m³\n")
-                .append("Tipo: ").append(envio.getTipoEnvio()).append("\n");
+            StringBuilder contenido = new StringBuilder();
+            contenido.append("📊 **Estado:** ").append(envio.getEstadoActual().name()).append("\n\n")
+                    .append("💰 **Costo:** $").append(String.format("%,.0f", envio.getCosto())).append("\n")
+                    .append("⚖️ **Peso:** ").append(envio.getPeso()).append(" kg\n")
+                    .append("📏 **Volumen:** ").append(envio.getVolumen()).append(" m³\n")
+                    .append("🚚 **Tipo:** ").append(envio.getTipoEnvio()).append("\n\n");
 
-        if (envio.getDireccionOrigen() != null) {
-            contenido.append("Origen: ").append(envio.getDireccionOrigen().getAlias()).append("\n");
+            if (envio.getDireccionOrigen() != null) {
+                contenido.append("📍 **Origen:**\n")
+                        .append("   Alias: ").append(envio.getDireccionOrigen().getAlias()).append("\n")
+                        .append("   Dirección: ").append(envio.getDireccionOrigen().getCalle()).append("\n")
+                        .append("   Zona: ").append(envio.getDireccionOrigen().getZona()).append("\n\n");
+            }
+
+            if (envio.getDireccionDestino() != null) {
+                contenido.append("🎯 **Destino:**\n")
+                        .append("   Alias: ").append(envio.getDireccionDestino().getAlias()).append("\n")
+                        .append("   Dirección: ").append(envio.getDireccionDestino().getCalle()).append("\n")
+                        .append("   Zona: ").append(envio.getDireccionDestino().getZona()).append("\n\n");
+            }
+
+            contenido.append("🔧 **Servicios Extras:** ")
+                    .append(envio.getServiciosExtras() != null && !envio.getServiciosExtras().isEmpty() ?
+                            String.join(", ", envio.getServiciosExtras()) : "Ninguno").append("\n\n")
+                    .append("📅 **Fecha Creación:** ").append(envio.getFechaCreacion() != null ?
+                            envio.getFechaCreacion().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "N/A").append("\n")
+                    .append("🔄 **Última Actualización:** ").append(envio.getFechaActualizacionEstado() != null ?
+                            envio.getFechaActualizacionEstado().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "N/A");
+
+            detalle.setContentText(contenido.toString());
+            detalle.getDialogPane().setPrefSize(500, 400);
+            detalle.showAndWait();
+
+        } catch (Exception e) {
+            System.err.println("Error al mostrar detalle del envío: " + e.getMessage());
+            mostrarError("Error al mostrar los detalles del envío.");
         }
-
-        if (envio.getDireccionDestino() != null) {
-            contenido.append("Destino: ").append(envio.getDireccionDestino().getAlias()).append("\n");
-        }
-
-        contenido.append("Servicios Extras: ").append(envio.getServiciosExtras() != null ? envio.getServiciosExtras() : "Ninguno").append("\n")
-                .append("Fecha Creación: ").append(envio.getFechaCreacion() != null ?
-                        envio.getFechaCreacion().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "N/A").append("\n")
-                .append("Última Actualización: ").append(envio.getFechaActualizacionEstado() != null ?
-                        envio.getFechaActualizacionEstado().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "N/A");
-
-        detalle.setContentText(contenido.toString());
-        detalle.getDialogPane().setPrefSize(400, 300);
-        detalle.showAndWait();
     }
 
     @FXML
@@ -178,13 +272,31 @@ public class HistorialEnviosController {
             return;
         }
 
-        // Lógica para generar y descargar el reporte CSV
         try {
             // Implementar la lógica de generación de CSV
             System.out.println("Generando reporte CSV con " + enviosFiltrados.size() + " registros...");
-            mostrarInfo("Reporte CSV generado exitosamente.\nRegistros: " + enviosFiltrados.size());
+
+            // Simulación de generación de CSV
+            StringBuilder csvContent = new StringBuilder();
+            csvContent.append("ID Envío,Origen,Destino,Estado,Costo,Fecha Creación\n");
+
+            for (EnvioDTO envio : enviosFiltrados) {
+                csvContent.append(envio.getIdEnvio()).append(",")
+                        .append(envio.getDireccionOrigen() != null ? envio.getDireccionOrigen().getAlias() : "N/A").append(",")
+                        .append(envio.getDireccionDestino() != null ? envio.getDireccionDestino().getAlias() : "N/A").append(",")
+                        .append(envio.getEstadoActual().name()).append(",")
+                        .append(String.format("%.0f", envio.getCosto())).append(",")
+                        .append(envio.getFechaCreacion().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")))
+                        .append("\n");
+            }
+
+            // En una aplicación real, aquí guardarías el archivo
+            System.out.println("Contenido CSV generado:\n" + csvContent.toString());
+
+            mostrarInfo("Reporte CSV generado exitosamente.\nRegistros: " + enviosFiltrados.size() + "\n(En una aplicación real, se descargaría el archivo)");
         } catch (Exception e) {
             mostrarError("Error al generar reporte CSV: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -195,13 +307,13 @@ public class HistorialEnviosController {
             return;
         }
 
-        // Lógica para generar y descargar el reporte PDF
         try {
             // Implementar la lógica de generación de PDF
             System.out.println("Generando reporte PDF con " + enviosFiltrados.size() + " registros...");
-            mostrarInfo("Reporte PDF generado exitosamente.\nRegistros: " + enviosFiltrados.size());
+            mostrarInfo("Reporte PDF generado exitosamente.\nRegistros: " + enviosFiltrados.size() + "\n(En una aplicación real, se descargaría el archivo PDF)");
         } catch (Exception e) {
             mostrarError("Error al generar reporte PDF: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -211,9 +323,13 @@ public class HistorialEnviosController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UsuarioMain.fxml"));
             Parent root = loader.load();
 
-            // Obtener la ventana actual desde cualquier nodo de la escena
-            Stage stage = (Stage) tablaEnvios.getScene().getWindow();
+            // Pasar el usuario actual al controlador principal
+            UsuarioMainController controller = loader.getController();
+            if (controller != null) {
+                controller.setUsuarioActual(usuarioActualDTO);
+            }
 
+            Stage stage = (Stage) tablaEnvios.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setTitle("Panel de Usuario - Urban Express");
@@ -221,13 +337,10 @@ public class HistorialEnviosController {
         } catch (IOException e) {
             mostrarError("Error al cargar ventana principal: " + e.getMessage());
             e.printStackTrace();
+        } catch (Exception e) {
+            mostrarError("Error inesperado: " + e.getMessage());
+            e.printStackTrace();
         }
-    }
-
-    @FXML
-    private void actualizarEnvios() {
-        cargarEnviosUsuario();
-        mostrarInfo("Lista de envíos actualizada.");
     }
 
     private void mostrarInfo(String mensaje) {
@@ -253,11 +366,15 @@ public class HistorialEnviosController {
 
         public AccionesEnvioCell(HistorialEnviosController controller) {
             this.controller = controller;
-            this.btnDetalle = new Button("Ver Detalle");
-            btnDetalle.getStyleClass().add("btn-info");
+            this.btnDetalle = new Button("👁️ Ver");
+
+            // Estilizar el botón
+            btnDetalle.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5 10; -fx-background-radius: 5; -fx-font-size: 11px;");
             btnDetalle.setOnAction(event -> {
                 EnvioDTO envio = getTableView().getItems().get(getIndex());
-                controller.verDetalleEnvio(envio);
+                if (envio != null) {
+                    controller.verDetalleEnvio(envio);
+                }
             });
         }
 
