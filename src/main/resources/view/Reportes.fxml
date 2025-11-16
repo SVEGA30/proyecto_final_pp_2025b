@@ -1,62 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_final_pp.ViewController.ReportesController" spacing="0" alignment="CENTER" prefWidth="900" prefHeight="700" style="-fx-background-color: linear-gradient(to bottom right, #ffd500, #ffed4e);">
+<VBox alignment="CENTER" prefHeight="700" prefWidth="900" spacing="0" style="-fx-background-color: linear-gradient(to bottom right, #ffd500, #ffed4e);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_final_pp.ViewController.ReportesController">
     <padding>
-        <Insets top="25" right="35" bottom="25" left="35"/>
+        <Insets bottom="25" left="35" right="35" top="25" />
     </padding>
 
     <!-- Header -->
-    <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 0 0 20 0;">
-        <Label text="Generar Reportes Operativos" style="-fx-text-fill: #2b2b2b; -fx-font-family: 'Arial Rounded MT Bold';">
+    <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 0 0 20 0;">
+        <Label style="-fx-text-fill: #2b2b2b; -fx-font-family: 'Arial Rounded MT Bold';" text="Generar Reportes Operativos">
             <font>
                 <Font name="System Bold" size="26.0" />
             </font>
         </Label>
         <Region HBox.hgrow="ALWAYS" />
-        <Button text="Volver" onAction="#volverAlMenuPrincipal" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 10 20; -fx-font-size: 14px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);">
+        <Button onAction="#volverAlMenuPrincipal" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 10 20; -fx-font-size: 14px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);" text="Volver">
             <padding>
-                <Insets top="10" right="20" bottom="10" left="20"/>
+                <Insets bottom="10" left="20" right="20" top="10" />
             </padding>
         </Button>
     </HBox>
 
     <!-- Formulario para seleccionar reporte - Más compacto -->
     <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);">
-        <HBox spacing="20" alignment="CENTER_LEFT">
+        <HBox alignment="CENTER_LEFT" spacing="20">
             <VBox spacing="8" HBox.hgrow="ALWAYS">
-                <Label text="Tipo de Reporte:" style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;"/>
+                <Label style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;" text="Tipo de Reporte:" />
                 <ComboBox fx:id="cbTipoReporte" promptText="Seleccionar tipo" style="-fx-font-size: 13px; -fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12; -fx-pref-height: 40;">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Entregas por Periodo"/>
-                            <String fx:value="Tiempos Promedio por Zona"/>
-                            <String fx:value="Ingresos por Servicio Adicional"/>
-                            <String fx:value="Top Incidencias"/>
+                            <String fx:value="Entregas por Periodo" />
+                            <String fx:value="Tiempos Promedio por Zona" />
+                            <String fx:value="Ingresos por Servicio Adicional" />
+                            <String fx:value="Top Incidencias" />
                         </FXCollections>
                     </items>
                 </ComboBox>
             </VBox>
             <VBox spacing="8" HBox.hgrow="ALWAYS">
-                <Label text="Fecha Desde:" style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;"/>
-                <DatePicker fx:id="dpFechaDesde" style="-fx-font-size: 13px; -fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-pref-height: 40;"/>
+                <Label style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;" text="Fecha Desde:" />
+                <DatePicker fx:id="dpFechaDesde" style="-fx-font-size: 13px; -fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-pref-height: 40;" />
             </VBox>
             <VBox spacing="8" HBox.hgrow="ALWAYS">
-                <Label text="Fecha Hasta:" style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;"/>
-                <DatePicker fx:id="dpFechaHasta" style="-fx-font-size: 13px; -fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-pref-height: 40;"/>
+                <Label style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;" text="Fecha Hasta:" />
+                <DatePicker fx:id="dpFechaHasta" style="-fx-font-size: 13px; -fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-pref-height: 40;" />
             </VBox>
             <VBox alignment="CENTER" spacing="8">
-                <Label text="‎" style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;"/> <!-- Espacio invisible -->
-                <HBox spacing="10" alignment="CENTER">
-                    <Button onAction="#generarReporte" text="Generar" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 12 20; -fx-font-size: 13px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);"/>
-                    <Button onAction="#descargarReporte" text="Descargar" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 12 20; -fx-font-size: 13px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);"/>
-                </HBox>
+                <Label style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;" text="‎" />
             </VBox>
         </HBox>
     </VBox>
@@ -67,11 +69,18 @@
     <!-- Vista previa del reporte - MUCHO MÁS GRANDE Y PROMINENTE -->
     <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);" VBox.vgrow="ALWAYS">
         <HBox alignment="CENTER_LEFT" spacing="10">
-            <Label text="Vista Previa del Reporte" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b; -fx-font-family: 'Arial Rounded MT Bold';"/>
+            <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b; -fx-font-family: 'Arial Rounded MT Bold';" text="Vista Previa del Reporte" />
             <Region HBox.hgrow="ALWAYS" />
-            <Label text="Área Principal" style="-fx-font-size: 12px; -fx-text-fill: #5a5a5a; -fx-font-style: italic;"/>
         </HBox>
-        <TextArea fx:id="txtVistaPrevia" editable="false" wrapText="true" VBox.vgrow="ALWAYS" style="-fx-font-family: 'Consolas', 'Monaco', monospace; -fx-font-size: 13px; -fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 5, 0, 0, 2);"/>
+        <TextArea fx:id="txtVistaPrevia" editable="false" style="-fx-font-family: 'Consolas', 'Monaco', monospace; -fx-font-size: 13px; -fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 5, 0, 0, 2);" wrapText="true" VBox.vgrow="ALWAYS" /> <!-- Espacio invisible -->
+          <HBox alignment="CENTER" spacing="10">
+              <Button onAction="#generarReporte" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 12 20; -fx-font-size: 13px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);" text="Generar">
+            <font>
+               <Font size="3.0" />
+            </font>
+         </Button>
+              <Button onAction="#descargarReporte" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 12 20; -fx-font-size: 13px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);" text="Descargar" />
+          </HBox>
     </VBox>
 
     <!-- Footer más pequeño -->

@@ -31,7 +31,7 @@ public class Main extends Application {
             System.out.println("Classpath: " + System.getProperty("java.class.path"));
             
             // Intentar cargar el FXML con diferentes rutas
-            URL fxmlUrl = getClass().getResource("/view/Reportes.fxml");
+            URL fxmlUrl = getClass().getResource("/view/Login.fxml");
             if (fxmlUrl == null) {
                 fxmlUrl = getClass().getResource("/view/GestionUsuarios");
             }

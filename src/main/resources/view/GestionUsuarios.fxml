@@ -69,7 +69,6 @@
             <HBox alignment="CENTER" spacing="10">
                 <Button fx:id="btnAgregarUsuario" onAction="#agregarUsuario" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 120; -fx-pref-height: 45; -fx-font-size: 14px; -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 8, 0, 0, 2);" text="➕ Agregar" />
                 <Button fx:id="btnActualizarUsuario" onAction="#actualizarUsuario" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 120; -fx-pref-height: 45; -fx-font-size: 14px; -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 8, 0, 0, 2);" text="Actualizar" />
-                <Button fx:id="btnLimpiarFormulario" onAction="#limpiarFormulario" style="-fx-background-color: transparent; -fx-text-fill: #7a7a7a; -fx-border-color: #e9ecef; -fx-border-width: 2; -fx-pref-width: 120; -fx-pref-height: 45; -fx-font-size: 14px; -fx-background-radius: 10; -fx-border-radius: 10; -fx-cursor: hand;" text=" Limpiar" />
             </HBox>
         </VBox>
 

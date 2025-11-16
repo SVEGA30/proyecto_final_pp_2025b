@@ -12,6 +12,7 @@ module proyecto_final_pp {
 
     // Solo abrir los paquetes que existen (los que tienen clases Java)
     opens proyecto_final_pp.ViewController to javafx.fxml;
+    opens proyecto_final_pp.model.dto to javafx.base;
     
     // QUITA o COMENTA esta línea:
     // opens proyecto_final_pp.view to javafx.fxml;

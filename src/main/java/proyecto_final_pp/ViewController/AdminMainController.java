@@ -79,7 +79,7 @@ public class AdminMainController {
     @FXML
     private void navegarAEnviosPendientes() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EnviosPendientes.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EnvioPendientes.fxml"));
             Parent root = loader.load();
             EnviosPendientesController controller = loader.getController();
             controller.cargarEnviosPendientes();

@@ -1,55 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_final_pp.ViewController.GestionUsuariosController" spacing="20.0" alignment="CENTER" prefWidth="800.0" prefHeight="600.0" style="-fx-background-color: #f8f9fa;">
+<VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="900.0" spacing="15.0" style="-fx-background-color: linear-gradient(to bottom right, #ffd500, #ffed4e);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_final_pp.ViewController.GestionUsuariosController">
     <padding>
-        <Insets top="20.0" right="30.0" bottom="20.0" left="30.0" />
+        <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
     </padding>
-    <HBox alignment="CENTER_LEFT" spacing="20.0">
-        <Label text="Gestión de Usuarios" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
-        <Region HBox.hgrow="ALWAYS" />
-        <Button text="Volver" onAction="#volverAlMenuPrincipal" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold;" />
-    </HBox>
-    <HBox spacing="20.0" VBox.vgrow="ALWAYS">
-        <VBox spacing="15.0" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2);">
-            <Label text="Agregar/Editar Usuario" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
-            <VBox spacing="5.0">
-                <Label text="ID:" style="-fx-text-fill: #34495e; -fx-font-weight: bold;" />
-                <TextField fx:id="txtIdUsuario" editable="false" style="-fx-font-size: 13px;" />
+
+    <!-- Header Principal Compacto -->
+    <VBox alignment="CENTER" spacing="8" style="-fx-background-color: rgba(255,255,255,0.9); -fx-background-radius: 15; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 3);" VBox.vgrow="NEVER">
+        <Label style="-fx-font-size: 32px;" text="👥" />
+        <VBox alignment="CENTER" spacing="4">
+            <Label style="-fx-font-family: 'Arial Rounded MT Bold'; -fx-font-weight: bold; -fx-font-size: 20px; -fx-text-fill: #2b2b2b;" text="GESTIÓN DE USUARIOS" />
+            <Label style="-fx-font-size: 11px; -fx-text-fill: #5a5a5a; -fx-font-style: italic;" text="Administre la información de usuarios del sistema" />
+        </VBox>
+    </VBox>
+
+    <!-- Contenido Principal Compacto -->
+    <HBox alignment="TOP_CENTER" prefHeight="400" spacing="20.0" VBox.vgrow="ALWAYS">
+        <!-- Panel de Formulario Compacto -->
+        <VBox maxWidth="320" prefWidth="320" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 4);">
+            <VBox alignment="CENTER_LEFT" spacing="8">
+                <Label style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #2b2b2b;" text="📝 Formulario" />
+                <Label style="-fx-text-fill: #7a7a7a; -fx-font-size: 11px;" text="Agregar o editar usuarios" />
             </VBox>
-            <VBox spacing="5.0">
-                <Label text="Nombre:" style="-fx-text-fill: #34495e; -fx-font-weight: bold;" />
-                <TextField fx:id="txtNombreUsuario" style="-fx-font-size: 13px;" />
+
+            <Separator style="-fx-background-color: #e9ecef;" />
+
+            <!-- Campos del Formulario Compactos -->
+            <VBox spacing="12.0" style="-fx-padding: 5 0 0 0;">
+                <!-- ID (solo lectura) -->
+                <VBox spacing="4.0">
+                    <Label style="-fx-text-fill: #34495e; -fx-font-weight: bold; -fx-font-size: 12px;" text="🔑 ID:" />
+                    <TextField fx:id="txtIdUsuario" editable="false" style="-fx-font-size: 13px; -fx-pref-height: 35; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #d1d8e0; -fx-padding: 8; -fx-background-color: #f8f9fa;" />
+                </VBox>
+
+                <!-- Nombre -->
+                <VBox spacing="4.0">
+                    <Label style="-fx-text-fill: #34495e; -fx-font-weight: bold; -fx-font-size: 12px;" text="👤 Nombre:" />
+                    <TextField fx:id="txtNombreUsuario" style="-fx-font-size: 13px; -fx-pref-height: 35; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #d1d8e0; -fx-padding: 8;" />
+                </VBox>
+
+                <!-- Correo -->
+                <VBox spacing="4.0">
+                    <Label style="-fx-text-fill: #34495e; -fx-font-weight: bold; -fx-font-size: 12px;" text="📧 Correo:" />
+                    <TextField fx:id="txtCorreoUsuario" style="-fx-font-size: 13px; -fx-pref-height: 35; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #d1d8e0; -fx-padding: 8;" />
+                </VBox>
+
+                <!-- Teléfono -->
+                <VBox spacing="4.0">
+                    <Label style="-fx-text-fill: #34495e; -fx-font-weight: bold; -fx-font-size: 12px;" text="📞 Teléfono:" />
+                    <TextField fx:id="txtTelefonoUsuario" style="-fx-font-size: 13px; -fx-pref-height: 35; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #d1d8e0; -fx-padding: 8;" />
+                </VBox>
             </VBox>
-            <VBox spacing="5.0">
-                <Label text="Correo:" style="-fx-text-fill: #34495e; -fx-font-weight: bold;" />
-                <TextField fx:id="txtCorreoUsuario" style="-fx-font-size: 13px;" />
-            </VBox>
-            <VBox spacing="5.0">
-                <Label text="Teléfono:" style="-fx-text-fill: #34495e; -fx-font-weight: bold;" />
-                <TextField fx:id="txtTelefonoUsuario" style="-fx-font-size: 13px;" />
-            </VBox>
-            <HBox spacing="10.0" alignment="CENTER_RIGHT">
-                <Button fx:id="btnAgregarUsuario" onAction="#agregarUsuario" text="Agregar" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;" />
-                <Button fx:id="btnActualizarUsuario" onAction="#actualizarUsuario" text="Actualizar" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;" />
-                <Button fx:id="btnLimpiarFormulario" onAction="#limpiarFormulario" text="Limpiar" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold;" />
+
+            <Separator style="-fx-background-color: #e9ecef;" />
+
+            <!-- Botones del Formulario -->
+            <HBox alignment="CENTER" spacing="10">
+                <Button fx:id="btnAgregarUsuario" onAction="#agregarUsuario" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 120; -fx-pref-height: 45; -fx-font-size: 14px; -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 8, 0, 0, 2);" text="➕ Agregar" />
+                <Button fx:id="btnActualizarUsuario" onAction="#actualizarUsuario" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 120; -fx-pref-height: 45; -fx-font-size: 14px; -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 8, 0, 0, 2);" text="Actualizar" />
             </HBox>
         </VBox>
-        <VBox spacing="15.0" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2);">
-            <Label text="Usuarios Existentes" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
-            <TableView fx:id="tablaUsuarios" style="-fx-font-size: 13px;">
-                <columns>
-                    <TableColumn fx:id="colIdUsuario" text="ID" prefWidth="100.0" />
-                    <TableColumn fx:id="colNombreUsuario" text="Nombre" prefWidth="150.0" />
-                    <TableColumn fx:id="colCorreoUsuario" text="Correo" prefWidth="200.0" />
-                    <TableColumn fx:id="colTelefonoUsuario" text="Teléfono" prefWidth="150.0" />
-                    <TableColumn fx:id="colAccionesUsuario" text="Acciones" prefWidth="100.0" />
-                </columns>
-            </TableView>
+
+        <!-- Panel de Tabla Compacto -->
+        <VBox maxWidth="520" prefWidth="520" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 4);" VBox.vgrow="ALWAYS">
+            <VBox alignment="CENTER_LEFT" spacing="8">
+                <Label style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #2b2b2b;" text="📊 Lista de Usuarios" />
+                <Label style="-fx-text-fill: #7a7a7a; -fx-font-size: 11px;" text="Gestione los usuarios registrados" />
+            </VBox>
+
+            <Separator style="-fx-background-color: #e9ecef;" />
+
+            <!-- Tabla Compacta -->
+            <VBox spacing="8" VBox.vgrow="ALWAYS">
+                <Label fx:id="lblContadorUsuarios" style="-fx-text-fill: #5a5a5a; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 0 0 3 0;" />
+
+                <TableView fx:id="tablaUsuarios" prefHeight="354.0" prefWidth="470.0" style="-fx-font-size: 12px; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e9ecef;" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colIdUsuario" prefWidth="70.0" text="🔑 ID" />
+                        <TableColumn fx:id="colNombreUsuario" prefWidth="120.0" text="👤 Nombre" />
+                        <TableColumn fx:id="colCorreoUsuario" prefWidth="150.0" text="📧 Correo" />
+                        <TableColumn fx:id="colTelefonoUsuario" prefWidth="100.0" text="📞 Teléfono" />
+                        <TableColumn fx:id="colAccionesUsuario" prefWidth="90.0" text="⚡ Acciones" />
+                    </columns>
+                </TableView>
+            </VBox>
         </VBox>
     </HBox>
+
+    <!-- Panel de Botones Inferiores -->
+    <HBox alignment="CENTER" spacing="15" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);">
+        <Region HBox.hgrow="ALWAYS" />
+        <Button onAction="#volverAlMenuPrincipal" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100; -fx-pref-height: 30; -fx-font-size: 11px; -fx-background-radius: 6; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.2), 3, 0, 0, 1);" text="⬅Volver" />
+    </HBox>
+
+    <!-- Footer Compacto -->
+    <VBox alignment="CENTER" spacing="4" style="-fx-background-color: rgba(255,255,255,0.4); -fx-background-radius: 8; -fx-padding: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.03), 4, 0, 0, 1);">
+        <Label style="-fx-font-weight: bold; -fx-text-fill: #2b2b2b; -fx-font-size: 10px;" text="💡 Gestión de Usuarios - Urban Express" />
+        <Label style="-fx-text-fill: #5a5a5a; -fx-font-size: 9px;" text="Sistema de Gestión Logística v2.0" />
+    </VBox>
 </VBox>

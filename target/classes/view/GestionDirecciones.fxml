@@ -71,13 +71,11 @@
              <columns>
                  <TableColumn fx:id="colAlias" prefWidth="150.0" text="📝 Alias" />
                  <TableColumn fx:id="colDireccion" prefWidth="300.0" text="📍 Dirección" />
-                 <TableColumn fx:id="colZona" prefWidth="150.0" text="🗺️ Zona" />
+                 <TableColumn fx:id="colZona" prefWidth="150.0" text="🗺 Zona" />
                  <TableColumn fx:id="colAcciones" prefWidth="120.0" text="⚡ Acciones" />
              </columns>
          </TableView>
-        <HBox alignment="CENTER_RIGHT" spacing="10">
-            <Button onAction="#actualizarDirecciones" style="-fx-background-color: transparent; -fx-text-fill: #7a7a7a; -fx-border-color: #e9ecef; -fx-border-width: 2; -fx-padding: 8 15; -fx-background-radius: 10; -fx-border-radius: 10; -fx-font-size: 12px; -fx-cursor: hand;" text="🔄 Actualizar Lista" />
-        </HBox>
+        <HBox alignment="CENTER_RIGHT" spacing="10" />
     </VBox>
 
     <!-- Footer -->

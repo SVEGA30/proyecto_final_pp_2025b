@@ -82,26 +82,15 @@ public class GestionRepartidoresController {
     private void configurarTabla() {
         System.out.println("🔧 Configurando tabla...");
 
-        // SOLUCIÓN SIMPLE: Usar Lambda en lugar de PropertyValueFactory
-        colIdRepartidor.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getIdRepartidor()));
+        // Usar PropertyValueFactory (más robusto)
+        colIdRepartidor.setCellValueFactory(new PropertyValueFactory<>("idRepartidor"));
+        colNombreRepartidor.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colDocumentoRepartidor.setCellValueFactory(new PropertyValueFactory<>("documento"));
+        colTelefonoRepartidor.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+        colZonaCobertura.setCellValueFactory(new PropertyValueFactory<>("zonaCobertura"));
+        colDisponibilidadRepartidor.setCellValueFactory(new PropertyValueFactory<>("disponibilidad"));
 
-        colNombreRepartidor.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getNombre()));
-
-        colDocumentoRepartidor.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getDocumento()));
-
-        colTelefonoRepartidor.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getTelefono()));
-
-        colZonaCobertura.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getZonaCobertura()));
-
-        colDisponibilidadRepartidor.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getDisponibilidad()));
-
-        System.out.println("✅ CellValueFactories configurados con Lambda");
+        System.out.println("✅ CellValueFactories configurados con PropertyValueFactory");
 
         // Configurar columna de acciones
         colAccionesRepartidor.setCellFactory(param -> new AccionesRepartidorCell());
@@ -129,7 +118,6 @@ public class GestionRepartidoresController {
             repartidoresObservable.setAll(repartidores);
             System.out.println("✅ ObservableList actualizado con " + repartidoresObservable.size() + " repartidores");
 
-            actualizarContador();
 
             // Verificar estado de la tabla
             System.out.println("📋 Estado tabla - Items: " + tablaRepartidores.getItems().size());
@@ -142,7 +130,7 @@ public class GestionRepartidoresController {
     }
 
     @FXML
-    private void agregarRepartidor() {
+    public void agregarRepartidor() {
         if (!validarCamposFormulario()) {
             return;
         }
@@ -180,7 +168,7 @@ public class GestionRepartidoresController {
     }
 
     @FXML
-    private void actualizarRepartidor() {
+    public void actualizarRepartidor() {
         String idRepartidor = txtIdRepartidor.getText().trim();
 
         if (idRepartidor.isEmpty()) {
@@ -224,7 +212,7 @@ public class GestionRepartidoresController {
     }
 
     @FXML
-    private void limpiarFormulario() {
+    public void limpiarFormulario() {
         txtIdRepartidor.clear();
         txtNombreRepartidor.clear();
         txtDocumentoRepartidor.clear();
@@ -301,16 +289,6 @@ public class GestionRepartidoresController {
         }
 
         return true;
-    }
-
-    private void actualizarContador() {
-        if (lblContadorRepartidores != null) {
-            int total = repartidoresObservable.size();
-            lblContadorRepartidores.setText("Total: " + total + " repartidores");
-            System.out.println("🔢 Contador actualizado: " + total + " repartidores");
-        } else {
-            System.err.println("⚠️ lblContadorRepartidores es null!");
-        }
     }
 
     @FXML
