@@ -1,5 +1,6 @@
 package proyecto_final_pp.ViewController;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,12 +11,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import proyecto_final_pp.model.Repartidor;
 import proyecto_final_pp.model.dto.RepartidorDTO;
 import proyecto_final_pp.Service.AdminService;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,9 +26,11 @@ public class GestionRepartidoresController {
     @FXML private TextField txtTelefonoRepartidor;
     @FXML private TextField txtZonaCobertura;
     @FXML private ComboBox<String> cbDisponibilidadRepartidor;
+
     @FXML private Button btnAgregarRepartidor;
     @FXML private Button btnActualizarRepartidor;
     @FXML private Button btnLimpiarFormulario;
+
     @FXML private TableView<RepartidorDTO> tablaRepartidores;
     @FXML private TableColumn<RepartidorDTO, String> colIdRepartidor;
     @FXML private TableColumn<RepartidorDTO, String> colNombreRepartidor;
@@ -39,159 +40,186 @@ public class GestionRepartidoresController {
     @FXML private TableColumn<RepartidorDTO, String> colDisponibilidadRepartidor;
     @FXML private TableColumn<RepartidorDTO, Void> colAccionesRepartidor;
 
+    @FXML private Label lblContadorRepartidores;
+
     private AdminService adminService;
     private ObservableList<RepartidorDTO> repartidoresObservable;
 
     @FXML
     public void initialize() {
+        System.out.println("🔧 Inicializando GestionRepartidoresController...");
+
         this.adminService = new AdminService();
         this.repartidoresObservable = FXCollections.observableArrayList();
 
-        // Configurar columnas de la tabla
-        colIdRepartidor.setCellValueFactory(new PropertyValueFactory<>("idRepartidor"));
-        colNombreRepartidor.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colDocumentoRepartidor.setCellValueFactory(new PropertyValueFactory<>("documento"));
-        colTelefonoRepartidor.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-        colZonaCobertura.setCellValueFactory(new PropertyValueFactory<>("zonaCobertura"));
-        colDisponibilidadRepartidor.setCellValueFactory(new PropertyValueFactory<>("disponibilidad"));
-
         // Configurar ComboBox de disponibilidad
-        cbDisponibilidadRepartidor.getItems().addAll(
-                Repartidor.EstadoDisponibilidad.ACTIVO.name(),
-                Repartidor.EstadoDisponibilidad.INACTIVO.name(),
-                Repartidor.EstadoDisponibilidad.EN_RUTA.name()
-        );
+        configurarComboBox();
 
-        // Configurar columna de acciones (Editar/Eliminar)
-        colAccionesRepartidor.setCellFactory(param -> new AccionesRepartidorCell(this));
+        // Configurar tabla
+        configurarTabla();
 
-        tablaRepartidores.setItems(repartidoresObservable);
-
-        // Cargar repartidores iniciales
+        // Cargar datos iniciales
         cargarRepartidores();
 
-        // Configurar botones inicialmente
-        btnActualizarRepartidor.setDisable(true);
+        System.out.println("✅ GestionRepartidoresController inicializado");
     }
 
+    private void configurarComboBox() {
+        System.out.println("🔧 Configurando ComboBox...");
+        // Opciones de disponibilidad
+        ObservableList<String> opcionesDisponibilidad = FXCollections.observableArrayList(
+                "ACTIVO",
+                "INACTIVO",
+                "EN_RUTA",
+                "DISPONIBLE",
+                "NO_DISPONIBLE"
+        );
+        cbDisponibilidadRepartidor.setItems(opcionesDisponibilidad);
+        cbDisponibilidadRepartidor.setValue("ACTIVO"); // Valor por defecto
+        System.out.println("✅ ComboBox configurado con " + opcionesDisponibilidad.size() + " opciones");
+    }
+
+    private void configurarTabla() {
+        System.out.println("🔧 Configurando tabla...");
+
+        // SOLUCIÓN SIMPLE: Usar Lambda en lugar de PropertyValueFactory
+        colIdRepartidor.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getIdRepartidor()));
+
+        colNombreRepartidor.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getNombre()));
+
+        colDocumentoRepartidor.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getDocumento()));
+
+        colTelefonoRepartidor.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getTelefono()));
+
+        colZonaCobertura.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getZonaCobertura()));
+
+        colDisponibilidadRepartidor.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getDisponibilidad()));
+
+        System.out.println("✅ CellValueFactories configurados con Lambda");
+
+        // Configurar columna de acciones
+        colAccionesRepartidor.setCellFactory(param -> new AccionesRepartidorCell());
+
+        // Asignar datos a la tabla
+        tablaRepartidores.setItems(repartidoresObservable);
+    }
+
+    @FXML
     private void cargarRepartidores() {
         try {
+            System.out.println("🔄 Cargando repartidores desde AdminService...");
             List<RepartidorDTO> repartidores = adminService.listarRepartidores();
+            System.out.println("📊 Repartidores obtenidos del servicio: " + repartidores.size());
+
+            // Debug: mostrar cada repartidor
+            for (RepartidorDTO rep : repartidores) {
+                System.out.println("   - " + rep.getIdRepartidor() + ": " + rep.getNombre() +
+                        " | Doc: " + rep.getDocumento() +
+                        " | Tel: " + rep.getTelefono() +
+                        " | Zona: " + rep.getZonaCobertura() +
+                        " | Disp: " + rep.getDisponibilidad());
+            }
+
             repartidoresObservable.setAll(repartidores);
+            System.out.println("✅ ObservableList actualizado con " + repartidoresObservable.size() + " repartidores");
+
+            actualizarContador();
+
+            // Verificar estado de la tabla
+            System.out.println("📋 Estado tabla - Items: " + tablaRepartidores.getItems().size());
+            System.out.println("📋 Estado tabla - Observable: " + repartidoresObservable.size());
+
         } catch (Exception e) {
-            mostrarError("Error al cargar repartidores: " + e.getMessage());
+            System.err.println("❌ Error al cargar los repartidores: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     @FXML
     private void agregarRepartidor() {
+        if (!validarCamposFormulario()) {
+            return;
+        }
+
         try {
             String nombre = txtNombreRepartidor.getText().trim();
             String documento = txtDocumentoRepartidor.getText().trim();
             String telefono = txtTelefonoRepartidor.getText().trim();
             String zonaCobertura = txtZonaCobertura.getText().trim();
-            String disponibilidadStr = cbDisponibilidadRepartidor.getValue();
+            String disponibilidad = cbDisponibilidadRepartidor.getValue();
 
-            if (nombre.isEmpty() || documento.isEmpty() || telefono.isEmpty() || zonaCobertura.isEmpty() || disponibilidadStr == null) {
-                mostrarError("Todos los campos son obligatorios.");
-                return;
-            }
+            // Crear DTO del repartidor
+            RepartidorDTO nuevoRepartidor = new RepartidorDTO(
+                    null, // ID se generará automáticamente
+                    nombre,
+                    documento,
+                    telefono,
+                    disponibilidad,
+                    zonaCobertura
+            );
 
-            // Validar formato de teléfono
-            if (!telefono.matches("\\d{10}")) {
-                mostrarError("El teléfono debe tener 10 dígitos.");
-                return;
-            }
-
-            // Crear DTO
-            RepartidorDTO nuevoRepartidor = new RepartidorDTO(null, nombre, documento, telefono, disponibilidadStr, zonaCobertura);
-
-            // Llamar a AdminService para crear
             boolean creado = adminService.crearRepartidor(nuevoRepartidor);
 
             if (creado) {
-                mostrarExito("Repartidor agregado exitosamente.");
+                mostrarExito("✅ Repartidor agregado exitosamente.");
                 limpiarFormulario();
-                cargarRepartidores();
+                cargarRepartidores(); // Actualizar tabla
             } else {
-                mostrarError("No se pudo agregar el repartidor. Verifique los datos.");
+                mostrarError("❌ No se pudo agregar el repartidor. Verifique los datos.");
             }
         } catch (Exception e) {
-            mostrarError("Error al agregar repartidor: " + e.getMessage());
+            mostrarError("❌ Error al agregar repartidor: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     @FXML
     private void actualizarRepartidor() {
+        String idRepartidor = txtIdRepartidor.getText().trim();
+
+        if (idRepartidor.isEmpty()) {
+            mostrarError("⚠️ Seleccione un repartidor para editar.");
+            return;
+        }
+
+        if (!validarCamposFormulario()) {
+            return;
+        }
+
         try {
-            String idRepartidor = txtIdRepartidor.getText().trim();
             String nombre = txtNombreRepartidor.getText().trim();
             String documento = txtDocumentoRepartidor.getText().trim();
             String telefono = txtTelefonoRepartidor.getText().trim();
             String zonaCobertura = txtZonaCobertura.getText().trim();
-            String disponibilidadStr = cbDisponibilidadRepartidor.getValue();
+            String disponibilidad = cbDisponibilidadRepartidor.getValue();
 
-            if (idRepartidor.isEmpty() || nombre.isEmpty() || documento.isEmpty() || telefono.isEmpty() || zonaCobertura.isEmpty() || disponibilidadStr == null) {
-                mostrarError("Seleccione un repartidor y complete todos los campos.");
-                return;
-            }
+            RepartidorDTO repartidorActualizado = new RepartidorDTO(
+                    idRepartidor,
+                    nombre,
+                    documento,
+                    telefono,
+                    disponibilidad,
+                    zonaCobertura
+            );
 
-            // Crear DTO con ID
-            RepartidorDTO repartidorActualizado = new RepartidorDTO(idRepartidor, nombre, documento, telefono, disponibilidadStr, zonaCobertura);
-
-            // Llamar a AdminService para actualizar
             boolean actualizado = adminService.actualizarRepartidor(repartidorActualizado);
 
             if (actualizado) {
-                mostrarExito("Repartidor actualizado exitosamente.");
+                mostrarExito("✅ Repartidor actualizado exitosamente.");
                 limpiarFormulario();
-                cargarRepartidores();
+                cargarRepartidores(); // Actualizar tabla
             } else {
-                mostrarError("No se pudo actualizar el repartidor.");
+                mostrarError("❌ No se pudo actualizar el repartidor.");
             }
         } catch (Exception e) {
-            mostrarError("Error al actualizar repartidor: " + e.getMessage());
+            mostrarError("❌ Error al actualizar repartidor: " + e.getMessage());
             e.printStackTrace();
-        }
-    }
-
-    // Método para manejar la edición desde la celda de la tabla
-    public void editarRepartidor(RepartidorDTO repartidor) {
-        txtIdRepartidor.setText(repartidor.getIdRepartidor());
-        txtNombreRepartidor.setText(repartidor.getNombre());
-        txtDocumentoRepartidor.setText(repartidor.getDocumento());
-        txtTelefonoRepartidor.setText(repartidor.getTelefono());
-        txtZonaCobertura.setText(repartidor.getZonaCobertura());
-        cbDisponibilidadRepartidor.setValue(repartidor.getDisponibilidad());
-
-        // Habilitar botón de actualizar y deshabilitar agregar
-        btnActualizarRepartidor.setDisable(false);
-        btnAgregarRepartidor.setDisable(true);
-    }
-
-    // Método para manejar la eliminación desde la celda de la tabla
-    public void eliminarRepartidor(RepartidorDTO repartidor) {
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setTitle("Confirmar Eliminación");
-        confirmacion.setHeaderText("¿Está seguro de que desea eliminar este repartidor?");
-        confirmacion.setContentText("ID: " + repartidor.getIdRepartidor() + "\nNombre: " + repartidor.getNombre());
-
-        Optional<ButtonType> resultado = confirmacion.showAndWait();
-        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
-            try {
-                boolean eliminado = adminService.eliminarRepartidor(repartidor.getIdRepartidor());
-                if (eliminado) {
-                    mostrarExito("Repartidor eliminado exitosamente.");
-                    cargarRepartidores();
-                } else {
-                    mostrarError("No se pudo eliminar el repartidor.");
-                }
-            } catch (Exception e) {
-                mostrarError("Error al eliminar repartidor: " + e.getMessage());
-                e.printStackTrace();
-            }
         }
     }
 
@@ -202,33 +230,109 @@ public class GestionRepartidoresController {
         txtDocumentoRepartidor.clear();
         txtTelefonoRepartidor.clear();
         txtZonaCobertura.clear();
-        cbDisponibilidadRepartidor.setValue(null);
+        cbDisponibilidadRepartidor.setValue("ACTIVO");
+        txtNombreRepartidor.requestFocus();
+    }
 
-        // Restablecer botones
-        btnActualizarRepartidor.setDisable(true);
-        btnAgregarRepartidor.setDisable(false);
+    // Método para manejar la edición desde la tabla
+    public void editarRepartidor(RepartidorDTO repartidor) {
+        txtIdRepartidor.setText(repartidor.getIdRepartidor());
+        txtNombreRepartidor.setText(repartidor.getNombre());
+        txtDocumentoRepartidor.setText(repartidor.getDocumento());
+        txtTelefonoRepartidor.setText(repartidor.getTelefono());
+        txtZonaCobertura.setText(repartidor.getZonaCobertura());
+        cbDisponibilidadRepartidor.setValue(repartidor.getDisponibilidad());
+
+        txtNombreRepartidor.requestFocus();
+    }
+
+    // Método para manejar la eliminación desde la tabla
+    public void eliminarRepartidor(RepartidorDTO repartidor) {
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmacion.setTitle("Confirmar Eliminación");
+        confirmacion.setHeaderText("¿Está seguro de que desea eliminar este repartidor?");
+        confirmacion.setContentText("ID: " + repartidor.getIdRepartidor() + "\nNombre: " + repartidor.getNombre() +
+                "\n\n⚠️ Esta acción no se puede deshacer.");
+
+        // Personalizar botones
+        ButtonType btnSi = new ButtonType("✅ Sí, eliminar");
+        ButtonType btnCancelar = new ButtonType("❌ Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+        confirmacion.getButtonTypes().setAll(btnSi, btnCancelar);
+
+        Optional<ButtonType> resultado = confirmacion.showAndWait();
+        if (resultado.isPresent() && resultado.get() == btnSi) {
+            try {
+                boolean eliminado = adminService.eliminarRepartidor(repartidor.getIdRepartidor());
+                if (eliminado) {
+                    mostrarExito("✅ Repartidor eliminado exitosamente.");
+                    cargarRepartidores();
+                } else {
+                    mostrarError("❌ No se pudo eliminar el repartidor.");
+                }
+            } catch (Exception e) {
+                mostrarError("❌ Error al eliminar repartidor: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private boolean validarCamposFormulario() {
+        String nombre = txtNombreRepartidor.getText().trim();
+        String documento = txtDocumentoRepartidor.getText().trim();
+        String telefono = txtTelefonoRepartidor.getText().trim();
+        String zonaCobertura = txtZonaCobertura.getText().trim();
+
+        // Validar campos obligatorios
+        if (nombre.isEmpty() || documento.isEmpty() || telefono.isEmpty() || zonaCobertura.isEmpty()) {
+            mostrarError("⚠️ Todos los campos son obligatorios.");
+            return false;
+        }
+
+        // Validar formato de documento (solo números)
+        if (!documento.matches("\\d+")) {
+            mostrarError("⚠️ El documento debe contener solo números.");
+            return false;
+        }
+
+        // Validar formato de teléfono (10 dígitos)
+        if (!telefono.matches("\\d{10}")) {
+            mostrarError("⚠️ El teléfono debe tener 10 dígitos.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void actualizarContador() {
+        if (lblContadorRepartidores != null) {
+            int total = repartidoresObservable.size();
+            lblContadorRepartidores.setText("Total: " + total + " repartidores");
+            System.out.println("🔢 Contador actualizado: " + total + " repartidores");
+        } else {
+            System.err.println("⚠️ lblContadorRepartidores es null!");
+        }
     }
 
     @FXML
     private void volverAlMenuPrincipal() {
         try {
-            // CORRECCIÓN: Ruta corregida
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AdminMain.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
-            Stage stage = (Stage) btnAgregarRepartidor.getScene().getWindow();
+            Stage stage = (Stage) txtNombreRepartidor.getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle("Panel de Administrador - Urban Express");
+            stage.centerOnScreen();
         } catch (IOException e) {
-            mostrarError("Error al cargar ventana principal de admin: " + e.getMessage());
+            mostrarError("❌ Error al cargar el panel principal: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     private void mostrarExito(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Éxito");
+        alert.setTitle("Operación Exitosa");
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
@@ -242,32 +346,42 @@ public class GestionRepartidoresController {
         alert.showAndWait();
     }
 
-    // Clase interna para la celda de acciones
+    // Clase interna para la celda de acciones - CORREGIDA
     private class AccionesRepartidorCell extends TableCell<RepartidorDTO, Void> {
-        private final GestionRepartidoresController controller;
+        private final HBox contenedorBotones;
         private final Button btnEditar;
         private final Button btnEliminar;
-        private final HBox botonesContainer;
 
-        public AccionesRepartidorCell(GestionRepartidoresController controller) {
-            this.controller = controller;
-            this.btnEditar = new Button("Editar");
-            this.btnEliminar = new Button("Eliminar");
+        public AccionesRepartidorCell() {
+            this.contenedorBotones = new HBox(5);
+            this.contenedorBotones.setStyle("-fx-alignment: CENTER;");
 
-            // Estilos de botones
-            btnEditar.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 11px;");
-            btnEliminar.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 11px;");
+            // Configurar botón Editar
+            this.btnEditar = new Button("✏️");
+            btnEditar.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; " +
+                    "-fx-min-width: 35; -fx-min-height: 25; -fx-background-radius: 6; " +
+                    "-fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(52,152,219,0.3), 3, 0, 0, 1);");
+            btnEditar.setTooltip(new Tooltip("Editar repartidor"));
 
+            // Configurar botón Eliminar
+            this.btnEliminar = new Button("🗑️");
+            btnEliminar.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; " +
+                    "-fx-min-width: 35; -fx-min-height: 25; -fx-background-radius: 6; " +
+                    "-fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(231,76,60,0.3), 3, 0, 0, 1);");
+            btnEliminar.setTooltip(new Tooltip("Eliminar repartidor"));
+
+            // Asignar eventos
             btnEditar.setOnAction(event -> {
                 RepartidorDTO repartidor = getTableView().getItems().get(getIndex());
-                controller.editarRepartidor(repartidor);
-            });
-            btnEliminar.setOnAction(event -> {
-                RepartidorDTO repartidor = getTableView().getItems().get(getIndex());
-                controller.eliminarRepartidor(repartidor);
+                editarRepartidor(repartidor);
             });
 
-            this.botonesContainer = new HBox(5, btnEditar, btnEliminar);
+            btnEliminar.setOnAction(event -> {
+                RepartidorDTO repartidor = getTableView().getItems().get(getIndex());
+                eliminarRepartidor(repartidor);
+            });
+
+            contenedorBotones.getChildren().addAll(btnEditar, btnEliminar);
         }
 
         @Override
@@ -276,7 +390,7 @@ public class GestionRepartidoresController {
             if (empty) {
                 setGraphic(null);
             } else {
-                setGraphic(botonesContainer);
+                setGraphic(contenedorBotones);
             }
         }
     }

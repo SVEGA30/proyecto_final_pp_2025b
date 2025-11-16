@@ -7,16 +7,18 @@ public class Repartidor {
     private String nombre;
     private String documento;
     private String telefono;
-    private EstadoDisponibilidad disponibilidad;
     private String zonaCobertura;
+    private String disponibilidad; // Usar String directamente
+
+    public Repartidor() {}
 
     public Repartidor(String idRepartidor, String nombre, String documento, String telefono, String zonaCobertura) {
         this.idRepartidor = idRepartidor;
         this.nombre = nombre;
         this.documento = documento;
         this.telefono = telefono;
-        this.disponibilidad = EstadoDisponibilidad.ACTIVO;
         this.zonaCobertura = zonaCobertura;
+        this.disponibilidad = "ACTIVO"; // Valor por defecto como String
     }
 
     // Getters y Setters
@@ -32,39 +34,49 @@ public class Repartidor {
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
 
-    public EstadoDisponibilidad getDisponibilidad() { return disponibilidad; }
-    public void setDisponibilidad(EstadoDisponibilidad disponibilidad) { this.disponibilidad = disponibilidad; }
-
     public String getZonaCobertura() { return zonaCobertura; }
     public void setZonaCobertura(String zonaCobertura) { this.zonaCobertura = zonaCobertura; }
 
-    // Métodos de negocio
+    public String getDisponibilidad() { return disponibilidad; }
+    public void setDisponibilidad(String disponibilidad) { this.disponibilidad = disponibilidad; }
+
+    // Método para verificar disponibilidad
     public boolean estaDisponible() {
-        return disponibilidad == EstadoDisponibilidad.ACTIVO;
+        return "ACTIVO".equals(disponibilidad) || "DISPONIBLE".equals(disponibilidad);
     }
 
-    public void cambiarDisponibilidad(EstadoDisponibilidad nuevaDisponibilidad) {
-        this.disponibilidad = nuevaDisponibilidad;
-    }
-
-    // Conversión DTO
-    public static Repartidor fromDTO(RepartidorDTO dto) {
-        if (dto == null) return null;
-        Repartidor repartidor = new Repartidor(dto.getIdRepartidor(), dto.getNombre(), dto.getDocumento(), dto.getTelefono(), dto.getZonaCobertura());
-        repartidor.setDisponibilidad(EstadoDisponibilidad.valueOf(dto.getDisponibilidad()));
-        return repartidor;
-    }
-
+    // Métodos de conversión DTO
     public RepartidorDTO toDTO() {
-        return new RepartidorDTO(idRepartidor, nombre, documento, telefono, disponibilidad.name(), zonaCobertura);
+        return new RepartidorDTO(
+                this.idRepartidor,
+                this.nombre,
+                this.documento,
+                this.telefono,
+                this.disponibilidad,
+                this.zonaCobertura
+        );
+    }
+
+    public static Repartidor fromDTO(RepartidorDTO dto) {
+        Repartidor repartidor = new Repartidor();
+        repartidor.setIdRepartidor(dto.getIdRepartidor());
+        repartidor.setNombre(dto.getNombre());
+        repartidor.setDocumento(dto.getDocumento());
+        repartidor.setTelefono(dto.getTelefono());
+        repartidor.setZonaCobertura(dto.getZonaCobertura());
+        repartidor.setDisponibilidad(dto.getDisponibilidad() != null ? dto.getDisponibilidad() : "ACTIVO");
+        return repartidor;
     }
 
     @Override
     public String toString() {
-        return nombre + " (" + idRepartidor + ") - " + disponibilidad;
-    }
-
-    public enum EstadoDisponibilidad {
-        ACTIVO, INACTIVO, EN_RUTA
+        return "Repartidor{" +
+                "idRepartidor='" + idRepartidor + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", documento='" + documento + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", zonaCobertura='" + zonaCobertura + '\'' +
+                ", disponibilidad='" + disponibilidad + '\'' +
+                '}';
     }
 }

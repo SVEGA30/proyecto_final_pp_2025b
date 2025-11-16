@@ -83,13 +83,14 @@ public class GestorDatos {
             usuario3.agregarMetodoPago("DaviPlata");
             usuarios.add(usuario3);
 
-            // Cargar repartidores de prueba
             Repartidor repartidor1 = new Repartidor("R000001", "Carlos Rodríguez", "12345678", "3001234567", "Chapinero");
             Repartidor repartidor2 = new Repartidor("R000002", "Ana Gómez", "87654321", "3007654321", "Usaquén");
             Repartidor repartidor3 = new Repartidor("R000003", "Luis Martínez", "11223344", "3001122334", "Suba");
             this.repartidores.add(repartidor1);
             this.repartidores.add(repartidor2);
             this.repartidores.add(repartidor3);
+            repartidor2.setDisponibilidad("EN_RUTA");
+            repartidor3.setDisponibilidad("INACTIVO");
 
             // Cargar envíos de prueba
             LocalDateTime ahora = LocalDateTime.now();
@@ -114,6 +115,8 @@ public class GestorDatos {
 
             Envio e4 = crearEnvioConIncidencia("ENV_000004", usuario1, usuario3, fechaIncidencia.minusHours(1), fechaIncidencia);
             this.envios.add(e4);
+
+
 
         } catch (Exception e) {
             System.err.println("Error al cargar datos iniciales: " + e.getMessage());
@@ -387,13 +390,8 @@ public class GestorDatos {
     public boolean actualizarDisponibilidadRepartidor(String idRepartidor, String nuevaDisponibilidad) {
         Repartidor repartidor = getRepartidorModeloPorId(idRepartidor);
         if (repartidor != null) {
-            try {
-                Repartidor.EstadoDisponibilidad estado = Repartidor.EstadoDisponibilidad.valueOf(nuevaDisponibilidad);
-                repartidor.setDisponibilidad(estado);
-                return true;
-            } catch (IllegalArgumentException e) {
-                return false;
-            }
+            repartidor.setDisponibilidad(nuevaDisponibilidad);
+            return true;
         }
         return false;
     }
@@ -405,7 +403,7 @@ public class GestorDatos {
 
     public List<RepartidorDTO> getRepartidoresDisponibles() {
         return repartidores.stream()
-                .filter(Repartidor::estaDisponible)
+                .filter(r -> "ACTIVO".equals(r.getDisponibilidad()) || "DISPONIBLE".equals(r.getDisponibilidad()))
                 .map(Repartidor::toDTO)
                 .collect(Collectors.toList());
     }

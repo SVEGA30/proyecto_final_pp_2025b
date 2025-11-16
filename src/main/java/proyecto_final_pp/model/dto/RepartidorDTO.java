@@ -3,9 +3,9 @@ package proyecto_final_pp.model.dto;
 public class RepartidorDTO {
     private String idRepartidor;
     private String nombre;
-    private String documento;
+    private String documento; // Campo añadido
     private String telefono;
-    private String disponibilidad; // "ACTIVO", "INACTIVO", "EN_RUTA"
+    private String disponibilidad;
     private String zonaCobertura;
 
     public RepartidorDTO() {}
