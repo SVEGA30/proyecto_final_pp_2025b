@@ -35,17 +35,88 @@ public class EnvioController {
     @FXML private Label lblInfoUsuario;
     @FXML private Button btnCrearEnvio;
     @FXML private Button btnLimpiar;
+    @FXML private Button btnVolverMenu;
+    @FXML private ComboBox<MetodoPagoDTO> cbMetodoPago;
+
 
     private LogisticaFacade logisticaFacade;
     private UsuarioDTO usuarioActualDTO;
+    private proyecto_final_pp.Service.ServicioAdicionalService servicioAdicionalService = new proyecto_final_pp.Service.ServicioAdicionalService();
 
     @FXML
     public void initialize() {
         this.logisticaFacade = new LogisticaFacade();
         configurarInterfaz();
         configurarListeners();
-        cargarZonasDisponibles(); // CARGA INMEDIATA DE ZONAS
+        cargarZonasDisponibles();
+        cargarMetodosPago();
     }
+
+    private void cargarMetodosPago() {
+        ObservableList<MetodoPagoDTO> metodosPago = FXCollections.observableArrayList(
+                new MetodoPagoDTO("1", "Tarjeta de Crédito", "**** 1234"),
+                new MetodoPagoDTO("2", "Tarjeta de Débito", "**** 5678"),
+                new MetodoPagoDTO("4", "Efectivo", "Pago contra entrega"),
+                new MetodoPagoDTO("6", "Cuenta Corriente", "Empresa"),
+                new MetodoPagoDTO("7", "Nequi", "312****890"),
+                new MetodoPagoDTO("8", "Daviplata", "315****123")
+        );
+        cbMetodoPago.setItems(metodosPago);
+        // Mostrar una representación legible del método de pago
+        cbMetodoPago.setCellFactory(listView -> new ListCell<MetodoPagoDTO>() {
+            @Override
+            protected void updateItem(MetodoPagoDTO item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    String ref = item.getReferencia() != null ? item.getReferencia() : "";
+                    setText(item.getTipo() + (ref.isEmpty() ? "" : " (" + ref + ")"));
+                }
+            }
+        });
+
+        cbMetodoPago.setConverter(new StringConverter<MetodoPagoDTO>() {
+            @Override
+            public String toString(MetodoPagoDTO metodo) {
+                if (metodo == null) return "";
+                String ref = metodo.getReferencia() != null ? metodo.getReferencia() : "";
+                return metodo.getTipo() + (ref.isEmpty() ? "" : " (" + ref + ")");
+            }
+
+            @Override
+            public MetodoPagoDTO fromString(String string) {
+                return null; // No necesario en este contexto
+            }
+        });
+    }
+
+    // Método para obtener el método de pago seleccionado (devuelve el DTO completo)
+    public MetodoPagoDTO getMetodoPagoSeleccionado() {
+        return cbMetodoPago.getValue();
+    }
+
+    // Método para obtener solo el tipo de pago seleccionado
+    public String getTipoPagoSeleccionado() {
+        MetodoPagoDTO metodo = cbMetodoPago.getValue();
+        return metodo != null ? metodo.getTipo() : null;
+    }
+
+    // Método para obtener el ID del método de pago seleccionado
+    public String getIdMetodoPagoSeleccionado() {
+        MetodoPagoDTO metodo = cbMetodoPago.getValue();
+        return metodo != null ? metodo.getIdMetodo() : null;
+    }
+
+    // Validar que se haya seleccionado un método de pago
+    private boolean validarMetodoPago() {
+        if (cbMetodoPago.getValue() == null) {
+            mostrarError("Por favor, seleccione un método de pago");
+            return false;
+        }
+        return true;
+    }
+
 
     public void setUsuarioActual(UsuarioDTO usuarioDTO) {
         this.usuarioActualDTO = usuarioDTO;
@@ -65,6 +136,11 @@ public class EnvioController {
         cbTipoEnvio.setItems(FXCollections.observableArrayList("ESTANDAR", "EXPRESS", "PRIORITARIO"));
         lblCostoCalculado.setText("Costo: $0");
         btnCrearEnvio.setDisable(true);
+
+        // Configurar botón de volver
+        if (btnVolverMenu != null) {
+            btnVolverMenu.setOnAction(event -> volverAlMenuPrincipal());
+        }
     }
 
     private void configurarComboBoxDirecciones() {
@@ -242,7 +318,10 @@ public class EnvioController {
                 System.out.println("Tipo: " + tipoEnvio);
                 System.out.println("Servicios: " + serviciosExtras);
 
-                double costoEstimado = logisticaFacade.calcularCostoEstimado(origenDTO, destinoDTO, peso, volumen, serviciosExtras, tipoEnvio);
+                // Obtener el método de pago seleccionado (puede ser null si no se eligió)
+                MetodoPagoDTO metodoPagoDTO = cbMetodoPago != null ? cbMetodoPago.getValue() : null;
+
+                double costoEstimado = logisticaFacade.calcularCostoEstimado(origenDTO, destinoDTO, peso, volumen, serviciosExtras, tipoEnvio, metodoPagoDTO);
 
                 lblCostoCalculado.setText(String.format("Costo: $%.0f", costoEstimado));
                 System.out.println("Costo calculado: $" + costoEstimado);
@@ -306,6 +385,7 @@ public class EnvioController {
             double volumen = Double.parseDouble(txtVolumen.getText());
             List<String> serviciosExtras = obtenerServiciosSeleccionados();
             String tipoEnvio = cbTipoEnvio.getValue();
+            MetodoPagoDTO metodoPagoDTO = cbMetodoPago.getValue(); // Nuevo: Obtener método de pago
 
             // DEBUG: Mostrar información detallada antes de crear
             System.out.println("=== INTENTANDO CREAR ENVÍO ===");
@@ -318,6 +398,14 @@ public class EnvioController {
             System.out.println("Volumen: " + volumen + " m³");
             System.out.println("Tipo: " + tipoEnvio);
             System.out.println("Servicios: " + serviciosExtras);
+            System.out.println("Método de Pago: " + (metodoPagoDTO != null ?
+                    metodoPagoDTO.getTipo() + " (" + metodoPagoDTO.getReferencia() + ")" : "null")); // Nuevo debug
+
+            // Validar método de pago
+            if (metodoPagoDTO == null) {
+                mostrarError("Por favor, seleccione un método de pago");
+                return;
+            }
 
             // Verificar si las direcciones son realmente diferentes
             if (origenDTO != null && destinoDTO != null) {
@@ -332,13 +420,24 @@ public class EnvioController {
                 System.out.println("¿Son iguales? " + (mismaCalle && mismaCiudad && mismaZona));
             }
 
-            EnvioDTO nuevoEnvioDTO = logisticaFacade.crearEnvio(usuarioActualDTO, origenDTO, destinoDTO, peso, volumen, serviciosExtras, tipoEnvio);
+            // Llamar al facade con el método de pago
+            EnvioDTO nuevoEnvioDTO = logisticaFacade.crearEnvio(
+                    usuarioActualDTO,
+                    origenDTO,
+                    destinoDTO,
+                    peso,
+                    volumen,
+                    serviciosExtras,
+                    tipoEnvio,
+                    metodoPagoDTO  // Nuevo parámetro
+            );
 
             if (nuevoEnvioDTO != null) {
                 System.out.println("✅ Envío creado exitosamente - ID: " + nuevoEnvioDTO.getIdEnvio());
                 mostrarExito("¡Envío creado exitosamente!\n" +
                         "ID: " + nuevoEnvioDTO.getIdEnvio() + "\n" +
                         "Costo: $" + nuevoEnvioDTO.getCosto() + "\n" +
+                        "Método de Pago: " + metodoPagoDTO.getTipo() + "\n" + // Nuevo en mensaje
                         "Estado: " + nuevoEnvioDTO.getEstadoActual().name());
                 limpiarFormulario();
             } else {
@@ -368,6 +467,10 @@ public class EnvioController {
         txtPeso.clear();
         txtVolumen.clear();
         cbTipoEnvio.getSelectionModel().clearSelection();
+
+        // Limpiar método de pago
+        cbMetodoPago.getSelectionModel().clearSelection();
+
         chkSeguro.setSelected(false);
         chkFragil.setSelected(false);
         chkFirmaRequerida.setSelected(false);
@@ -381,12 +484,15 @@ public class EnvioController {
     @FXML
     private void volverAlMenuPrincipal() {
         try {
+            System.out.println("Intentando volver al menú principal...");
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UsuarioMain.fxml"));
             Parent root = loader.load();
 
             UsuarioMainController controller = loader.getController();
             if (controller != null) {
                 controller.setUsuarioActual(usuarioActualDTO);
+                System.out.println("Usuario pasado al controlador principal: " + usuarioActualDTO.getNombre());
             }
 
             Scene scene = new Scene(root);
@@ -395,13 +501,21 @@ public class EnvioController {
                 stage.setScene(scene);
                 stage.setTitle("Panel de Usuario - Urban Express");
                 stage.centerOnScreen();
+                System.out.println("Navegación al menú principal exitosa");
             } else {
+                System.err.println("No se pudo obtener la ventana actual");
                 mostrarError("No se pudo obtener la ventana actual.");
             }
         } catch (IOException e) {
+            System.err.println("Error de E/S al cargar ventana principal: " + e.getMessage());
             mostrarError("Error al cargar ventana principal: " + e.getMessage());
             e.printStackTrace();
+        } catch (IllegalStateException e) {
+            System.err.println("Error de estado al cargar FXML: " + e.getMessage());
+            mostrarError("Error en la configuración de la interfaz: " + e.getMessage());
+            e.printStackTrace();
         } catch (Exception e) {
+            System.err.println("Error inesperado al volver al menú: " + e.getMessage());
             mostrarError("Error inesperado: " + e.getMessage());
             e.printStackTrace();
         }
@@ -479,6 +593,9 @@ public class EnvioController {
             if (lblInfoUsuario != null && lblInfoUsuario.getScene() != null) {
                 return (Stage) lblInfoUsuario.getScene().getWindow();
             }
+            if (btnVolverMenu != null && btnVolverMenu.getScene() != null) {
+                return (Stage) btnVolverMenu.getScene().getWindow();
+            }
 
             // Si no se pudo obtener de los nodos específicos, buscar cualquier nodo de la escena
             Node anyNode = cbDireccionesOrigen != null ? cbDireccionesOrigen :
@@ -510,8 +627,6 @@ public class EnvioController {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-
-    private proyecto_final_pp.Service.ServicioAdicionalService servicioAdicionalService = new proyecto_final_pp.Service.ServicioAdicionalService();
 
     private List<ServicioAdicionalDTO> obtenerServiciosSeleccionadosDTO() {
         List<ServicioAdicionalDTO> servicios = new ArrayList<>();

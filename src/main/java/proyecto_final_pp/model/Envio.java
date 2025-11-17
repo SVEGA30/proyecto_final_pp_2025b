@@ -2,6 +2,7 @@ package proyecto_final_pp.model;
 
 import proyecto_final_pp.model.dto.EnvioDTO;
 import proyecto_final_pp.model.dto.DireccionDTO;
+import proyecto_final_pp.model.dto.MetodoPagoDTO;
 import proyecto_final_pp.observer.EnvioObserver;
 import proyecto_final_pp.observer.EnvioSubject;
 
@@ -82,7 +83,7 @@ public class Envio implements EnvioSubject {
     public String getRepartidorAsignadoId() { return repartidorAsignadoId; }
     public void setRepartidorAsignadoId(String repartidorAsignadoId) { this.repartidorAsignadoId = repartidorAsignadoId; }
 
-
+    // Métodos de estado
     public void asignarARepartidor(String idRepartidor) {
         if (estadoActual.puedeAsignar()) {
             this.repartidorAsignadoId = idRepartidor;
@@ -188,20 +189,45 @@ public class Envio implements EnvioSubject {
             System.err.println("Estado no mapeado: " + this.estadoActual.getNombre());
         }
 
-        return new EnvioDTO(
-                this.idEnvio,
-                this.idUsuario,
-                origenDTO,
-                destinoDTO,
-                this.peso,
-                this.volumen,
-                this.costo,
-                enumEstado,
-                this.fechaCreacion,
-                this.fechaActualizacionEstado,
-                this.tipoEnvio,
-                this.serviciosExtras
-        );
+        // CORREGIDO: Usar setters en lugar del constructor para evitar problemas de parámetros
+        EnvioDTO envioDTO = new EnvioDTO();
+        envioDTO.setIdEnvio(this.idEnvio);
+        envioDTO.setIdUsuario(this.idUsuario);
+        envioDTO.setDireccionOrigen(origenDTO);
+        envioDTO.setDireccionDestino(destinoDTO);
+        envioDTO.setPeso(this.peso);
+        envioDTO.setVolumen(this.volumen);
+        envioDTO.setCosto(this.costo);
+        envioDTO.setEstadoActual(enumEstado);
+        envioDTO.setFechaCreacion(this.fechaCreacion);
+        envioDTO.setFechaActualizacionEstado(this.fechaActualizacionEstado);
+        envioDTO.setTipoEnvio(this.tipoEnvio);
+        envioDTO.setServiciosExtras(this.serviciosExtras != null ? new ArrayList<>(this.serviciosExtras) : new ArrayList<>());
+
+        // El método de pago no se establece aquí ya que el modelo Envio no tiene ese campo
+        // Se establecerá desde el servicio cuando sea necesario
+
+        return envioDTO;
+    }
+
+    // Método para obtener información básica del envío (para logs)
+    public String getInfoBasica() {
+        return String.format("Envío %s - %s -> %s - Estado: %s",
+                idEnvio,
+                direccionOrigen != null ? direccionOrigen.getCiudad() : "N/A",
+                direccionDestino != null ? direccionDestino.getCiudad() : "N/A",
+                estadoActual.getNombre());
+    }
+
+    // Método para verificar si el envío puede ser cancelado
+    public boolean puedeSerCancelado() {
+        return estadoActual.puedeCancelar();
+    }
+
+    // Método para verificar si el envío está en un estado final
+    public boolean estaEnEstadoFinal() {
+        return estadoActual instanceof EstadoEntregado ||
+                estadoActual instanceof EstadoCancelado;
     }
 
     @Override
@@ -209,8 +235,8 @@ public class Envio implements EnvioSubject {
         return "Envio{" +
                 "idEnvio='" + idEnvio + '\'' +
                 ", idUsuario='" + idUsuario + '\'' +
-                ", direccionOrigen=" + direccionOrigen +
-                ", direccionDestino=" + direccionDestino +
+                ", direccionOrigen=" + (direccionOrigen != null ? direccionOrigen.getCiudad() : "null") +
+                ", direccionDestino=" + (direccionDestino != null ? direccionDestino.getCiudad() : "null") +
                 ", peso=" + peso +
                 ", volumen=" + volumen +
                 ", costo=" + costo +
@@ -220,5 +246,19 @@ public class Envio implements EnvioSubject {
                 ", serviciosExtras=" + serviciosExtras +
                 ", repartidorAsignadoId='" + repartidorAsignadoId + '\'' +
                 '}';
+    }
+
+    // Método equals y hashCode para comparaciones
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Envio envio = (Envio) o;
+        return idEnvio != null && idEnvio.equals(envio.idEnvio);
+    }
+
+    @Override
+    public int hashCode() {
+        return idEnvio != null ? idEnvio.hashCode() : 0;
     }
 }

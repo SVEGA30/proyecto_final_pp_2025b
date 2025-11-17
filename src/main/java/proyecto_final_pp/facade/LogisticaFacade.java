@@ -1,10 +1,6 @@
 package proyecto_final_pp.facade;
 
-import proyecto_final_pp.model.dto.UsuarioDTO;
-import proyecto_final_pp.model.dto.EnvioDTO;
-import proyecto_final_pp.model.dto.DireccionDTO;
-import proyecto_final_pp.model.dto.ZonaDTO;
-import proyecto_final_pp.model.dto.RepartidorDTO;
+import proyecto_final_pp.model.dto.*;
 import proyecto_final_pp.Service.EnvioService;
 import proyecto_final_pp.Service.DireccionService;
 import proyecto_final_pp.Service.AdminService;
@@ -58,16 +54,17 @@ public class LogisticaFacade {
 
     public EnvioDTO crearEnvio(UsuarioDTO usuarioDTO, DireccionDTO direccionOrigenDTO,
                                DireccionDTO direccionDestinoDTO, double peso, double volumen,
-                               List<String> serviciosExtras, String tipoEnvio) {
-        return envioService.crearEnvio(usuarioDTO, direccionOrigenDTO, direccionDestinoDTO, peso, volumen, serviciosExtras, tipoEnvio);
+                               List<String> serviciosExtras, String tipoEnvio, MetodoPagoDTO metodoPagoDTO) {
+        return envioService.crearEnvio(usuarioDTO, direccionOrigenDTO, direccionDestinoDTO, peso, volumen, serviciosExtras, tipoEnvio, metodoPagoDTO);
     }
 
     public List<EnvioDTO> getEnviosPorUsuario(UsuarioDTO usuarioDTO) {
         return envioService.getEnviosPorUsuario(usuarioDTO);
     }
 
-    public double calcularCostoEstimado(DireccionDTO origenDTO, DireccionDTO destinoDTO, double peso, double volumen, List<String> serviciosExtras, String tipoEnvio) {
-        return envioService.calcularCostoEstimado(origenDTO, destinoDTO, peso, volumen, serviciosExtras, tipoEnvio);
+    public double calcularCostoEstimado(DireccionDTO origenDTO, DireccionDTO destinoDTO, double peso, double volumen, List<String> serviciosExtras, String tipoEnvio, MetodoPagoDTO metodoPagoDTO) {
+        return envioService.calcularCostoEstimado(origenDTO, destinoDTO, peso, volumen,
+                serviciosExtras, tipoEnvio, metodoPagoDTO);
     }
 
     public boolean cancelarEnvio(String idEnvio) {
@@ -152,4 +149,8 @@ public class LogisticaFacade {
     public void cambiarEstrategiaCalculoTarifa(CalculadoraTarifaStrategy nuevaEstrategia) {
         envioService.setCStrategy(nuevaEstrategia);
     }
+
+
+
+
 }

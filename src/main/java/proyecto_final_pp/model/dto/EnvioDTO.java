@@ -17,16 +17,16 @@ public class EnvioDTO {
     private LocalDateTime fechaActualizacionEstado;
     private String tipoEnvio;
     private List<String> serviciosExtras;
+    private MetodoPagoDTO metodoPago;
 
-    // Constructores, getters, setters, toString()
-
+    // Constructores
     public EnvioDTO() {}
 
     public EnvioDTO(String idEnvio, String idUsuario, DireccionDTO direccionOrigen,
                     DireccionDTO direccionDestino, double peso, double volumen, double costo,
                     EstadoEnvio estadoActual, LocalDateTime fechaCreacion,
                     LocalDateTime fechaActualizacionEstado, String tipoEnvio,
-                    List<String> serviciosExtras) {
+                    List<String> serviciosExtras, MetodoPagoDTO metodoPago) {
         this.idEnvio = idEnvio;
         this.idUsuario = idUsuario;
         this.direccionOrigen = direccionOrigen;
@@ -39,6 +39,7 @@ public class EnvioDTO {
         this.fechaActualizacionEstado = fechaActualizacionEstado;
         this.tipoEnvio = tipoEnvio;
         this.serviciosExtras = serviciosExtras;
+        this.metodoPago = metodoPago;
     }
 
     // Getters y Setters
@@ -78,6 +79,10 @@ public class EnvioDTO {
     public List<String> getServiciosExtras() { return serviciosExtras; }
     public void setServiciosExtras(List<String> serviciosExtras) { this.serviciosExtras = serviciosExtras; }
 
+    // Nuevos getters y setters para método de pago
+    public MetodoPagoDTO getMetodoPago() { return metodoPago; }
+    public void setMetodoPago(MetodoPagoDTO metodoPago) { this.metodoPago = metodoPago; }
+
     @Override
     public String toString() {
         return "EnvioDTO{" +
@@ -85,6 +90,26 @@ public class EnvioDTO {
                 ", idUsuario='" + idUsuario + '\'' +
                 ", estadoActual=" + estadoActual +
                 ", costo=" + costo +
+                ", tipoEnvio='" + tipoEnvio + '\'' +
+                ", metodoPago=" + (metodoPago != null ? metodoPago.getTipo() : "null") +
+                '}';
+    }
+
+    // Método toString más detallado
+    public String toStringDetallado() {
+        return "EnvioDTO{" +
+                "idEnvio='" + idEnvio + '\'' +
+                ", idUsuario='" + idUsuario + '\'' +
+                ", direccionOrigen=" + (direccionOrigen != null ? direccionOrigen.getAlias() : "null") +
+                ", direccionDestino=" + (direccionDestino != null ? direccionDestino.getAlias() : "null") +
+                ", peso=" + peso +
+                ", volumen=" + volumen +
+                ", costo=" + costo +
+                ", estadoActual=" + estadoActual +
+                ", fechaCreacion=" + fechaCreacion +
+                ", tipoEnvio='" + tipoEnvio + '\'' +
+                ", serviciosExtras=" + serviciosExtras +
+                ", metodoPago=" + (metodoPago != null ? metodoPago.getTipo() + " (" + metodoPago.getReferencia() + ")" : "null") +
                 '}';
     }
 

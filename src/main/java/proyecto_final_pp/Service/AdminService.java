@@ -5,8 +5,8 @@ import proyecto_final_pp.model.dto.EnvioDTO;
 import proyecto_final_pp.model.dto.DireccionDTO;
 import proyecto_final_pp.model.dto.ZonaDTO;
 import proyecto_final_pp.model.dto.RepartidorDTO;
+import proyecto_final_pp.model.dto.MetodoPagoDTO;
 import proyecto_final_pp.model.Envio;
-import proyecto_final_pp.model.Repartidor;
 import proyecto_final_pp.strategy.CalculadoraTarifaStrategy;
 import proyecto_final_pp.strategy.CalculadoraTarifaBasica;
 import proyecto_final_pp.util.GestorDatos;
@@ -224,8 +224,8 @@ public class AdminService {
 
     public double calcularCostoEstimado(DireccionDTO origenDTO, DireccionDTO destinoDTO,
                                         double peso, double volumen, List<String> serviciosExtras,
-                                        String tipoEnvio) {
-        return envioService.calcularCostoEstimado(origenDTO, destinoDTO, peso, volumen, serviciosExtras, tipoEnvio);
+                                        String tipoEnvio, MetodoPagoDTO metodoPagoDTO) {
+        return envioService.calcularCostoEstimado(origenDTO, destinoDTO, peso, volumen, serviciosExtras, tipoEnvio, metodoPagoDTO);
     }
 
     public boolean cancelarEnvio(String idEnvio) {

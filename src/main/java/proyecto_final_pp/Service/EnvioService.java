@@ -1,5 +1,6 @@
 package proyecto_final_pp.Service;
 
+import proyecto_final_pp.model.dto.MetodoPagoDTO;
 import proyecto_final_pp.model.dto.UsuarioDTO;
 import proyecto_final_pp.model.dto.EnvioDTO;
 import proyecto_final_pp.model.dto.DireccionDTO;
@@ -20,7 +21,7 @@ public class EnvioService {
 
     public EnvioDTO crearEnvio(UsuarioDTO usuarioDTO, DireccionDTO direccionOrigenDTO,
                                DireccionDTO direccionDestinoDTO, double peso, double volumen,
-                               List<String> serviciosExtras, String tipoEnvio) {
+                               List<String> serviciosExtras, String tipoEnvio, MetodoPagoDTO metodoPagoDTO) {
         try {
             // Validaciones
             if (direccionOrigenDTO == null || direccionDestinoDTO == null) {
@@ -36,9 +37,9 @@ public class EnvioService {
                 throw new IllegalArgumentException("El volumen debe estar entre 0.001 y 5 m³");
             }
 
-            // Calcular costo
-            double costo = calcularCostoEstimado(direccionOrigenDTO, direccionDestinoDTO,
-                    peso, volumen, serviciosExtras, tipoEnvio);
+                // Calcular costo
+                double costo = calcularCostoEstimado(direccionOrigenDTO, direccionDestinoDTO,
+                    peso, volumen, serviciosExtras, tipoEnvio, metodoPagoDTO);
 
             // ✅ CORRECCIÓN: Generar ID y establecer estado
             EnvioDTO nuevoEnvio = new EnvioDTO();
@@ -52,6 +53,8 @@ public class EnvioService {
             nuevoEnvio.setCosto(costo);
             nuevoEnvio.setTipoEnvio(tipoEnvio);
             nuevoEnvio.setServiciosExtras(serviciosExtras != null ? new ArrayList<>(serviciosExtras) : new ArrayList<>());
+            // Guardar método de pago seleccionado
+            nuevoEnvio.setMetodoPago(metodoPagoDTO);
             nuevoEnvio.setEstadoActual(EnvioDTO.EstadoEnvio.SOLICITADO); // ✅ Estado inicial
             nuevoEnvio.setFechaCreacion(java.time.LocalDateTime.now());
             nuevoEnvio.setFechaActualizacionEstado(java.time.LocalDateTime.now());
@@ -80,7 +83,7 @@ public class EnvioService {
 
     public double calcularCostoEstimado(DireccionDTO origenDTO, DireccionDTO destinoDTO,
                                         double peso, double volumen, List<String> serviciosExtras,
-                                        String tipoEnvio) {
+                                        String tipoEnvio, MetodoPagoDTO metodoPagoDTO) {
         return cStrategy.calcularCosto(origenDTO, destinoDTO, peso, volumen, serviciosExtras, tipoEnvio);
     }
 
