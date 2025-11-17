@@ -47,8 +47,7 @@ public class GestionUsuariosController {
         // Cargar usuarios iniciales
         cargarUsuarios();
 
-        // Configurar estilos de botones dinámicamente
-        configurarEstilosBotones();
+
     }
 
     private void configurarTabla() {
@@ -79,7 +78,7 @@ public class GestionUsuariosController {
 
         btnAgregarUsuario.setStyle(estiloBotonPrincipal);
         btnActualizarUsuario.setStyle(estiloBotonPrincipal);
-        btnLimpiarFormulario.setStyle(estiloBotonSecundario);
+
     }
 
     @FXML

@@ -40,8 +40,6 @@ public class GestionRepartidoresController {
     @FXML private TableColumn<RepartidorDTO, String> colDisponibilidadRepartidor;
     @FXML private TableColumn<RepartidorDTO, Void> colAccionesRepartidor;
 
-    @FXML private Label lblContadorRepartidores;
-
     private AdminService adminService;
     private ObservableList<RepartidorDTO> repartidoresObservable;
 
@@ -52,13 +50,13 @@ public class GestionRepartidoresController {
         this.adminService = new AdminService();
         this.repartidoresObservable = FXCollections.observableArrayList();
 
-        // Configurar ComboBox de disponibilidad
-        configurarComboBox();
-
-        // Configurar tabla
+        // 1. PRIMERO configurar la tabla
         configurarTabla();
 
-        // Cargar datos iniciales
+        // 2. LUEGO configurar ComboBox
+        configurarComboBox();
+
+        // 3. FINALMENTE cargar los datos
         cargarRepartidores();
 
         System.out.println("✅ GestionRepartidoresController inicializado");
@@ -82,7 +80,7 @@ public class GestionRepartidoresController {
     private void configurarTabla() {
         System.out.println("🔧 Configurando tabla...");
 
-        // Usar PropertyValueFactory (más robusto)
+        // Configurar cellValueFactory con PropertyValueFactory
         colIdRepartidor.setCellValueFactory(new PropertyValueFactory<>("idRepartidor"));
         colNombreRepartidor.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colDocumentoRepartidor.setCellValueFactory(new PropertyValueFactory<>("documento"));
@@ -95,8 +93,13 @@ public class GestionRepartidoresController {
         // Configurar columna de acciones
         colAccionesRepartidor.setCellFactory(param -> new AccionesRepartidorCell());
 
-        // Asignar datos a la tabla
+        // Asignar la ObservableList a la tabla UNA SOLA VEZ
         tablaRepartidores.setItems(repartidoresObservable);
+
+        // Añadir placeholder para mejor UX
+        tablaRepartidores.setPlaceholder(new Label("No se encontraron repartidores"));
+
+        System.out.println("✅ Tabla configurada y conectada con ObservableList");
     }
 
     @FXML
@@ -115,17 +118,40 @@ public class GestionRepartidoresController {
                         " | Disp: " + rep.getDisponibilidad());
             }
 
-            repartidoresObservable.setAll(repartidores);
-            System.out.println("✅ ObservableList actualizado con " + repartidoresObservable.size() + " repartidores");
+            // CORREGIDO: Usar clear() y addAll() en lugar de setAll()
+            repartidoresObservable.clear();
+            repartidoresObservable.addAll(repartidores);
 
+            System.out.println("✅ ObservableList actualizada con " + repartidoresObservable.size() + " repartidores");
 
             // Verificar estado de la tabla
             System.out.println("📋 Estado tabla - Items: " + tablaRepartidores.getItems().size());
             System.out.println("📋 Estado tabla - Observable: " + repartidoresObservable.size());
 
+            // Forzar refresh de la tabla
+            tablaRepartidores.refresh();
+
+            // Verificación adicional de conexión
+            verificarConexionTabla();
+
         } catch (Exception e) {
             System.err.println("❌ Error al cargar los repartidores: " + e.getMessage());
             e.printStackTrace();
+            mostrarError("Error al cargar repartidores: " + e.getMessage());
+        }
+    }
+
+    // MÉTODO NUEVO: Verificar conexión entre tabla y datos
+    private void verificarConexionTabla() {
+        System.out.println("🔍 VERIFICANDO CONEXIÓN TABLA:");
+        System.out.println("   - Tabla items: " + tablaRepartidores.getItems().size());
+        System.out.println("   - Observable: " + repartidoresObservable.size());
+        System.out.println("   - ¿Misma instancia?: " + (tablaRepartidores.getItems() == repartidoresObservable));
+
+        if (tablaRepartidores.getItems().size() != repartidoresObservable.size()) {
+            System.err.println("❌ PROBLEMA: La tabla y el Observable tienen diferente cantidad de items!");
+        } else {
+            System.out.println("✅ CONEXIÓN CORRECTA: Tabla y Observable sincronizados");
         }
     }
 
