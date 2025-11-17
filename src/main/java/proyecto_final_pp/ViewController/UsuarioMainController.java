@@ -22,6 +22,7 @@ public class UsuarioMainController {
     private UsuarioDTO usuarioActualDTO;
     private LogisticaFacade logisticaFacade;
 
+
     @FXML
     public void initialize() {
         try {
@@ -155,7 +156,6 @@ public class UsuarioMainController {
         actualizarInterfazUsuario();
     }
 
-    // Método genérico para cargar ventanas
     private void cargarVentana(String fxmlPath, String titulo) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -192,7 +192,6 @@ public class UsuarioMainController {
         }
     }
 
-    // Método auxiliar mejorado para obtener el Stage actual
     private Stage getCurrentStage() {
         try {
             // Intentar con cada label en orden

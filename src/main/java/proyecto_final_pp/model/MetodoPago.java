@@ -2,27 +2,27 @@ package proyecto_final_pp.model;
 
 import proyecto_final_pp.model.dto.MetodoPagoDTO;
 
-// Asumiendo que MetodoPago es una clase simple como en el DTO
+
 public class MetodoPago {
     private String idMetodo;
-    private String tipo; // "Tarjeta Crédito", "Nequi", etc.
-    private String referencia; // Número de tarjeta (parcial), número de celular, etc. (simulado)
+    private String tipo;
+    private String referencia;
 
-    // Constructor existente (ajustado para incluir ID)
+
     public MetodoPago(String idMetodo, String tipo, String referencia) {
         this.idMetodo = idMetodo;
         this.tipo = tipo;
         this.referencia = referencia;
     }
 
-    // Constructor alternativo para crear sin ID
+
     public MetodoPago(String tipo, String referencia) {
         this.idMetodo = "PAGO_" + System.currentTimeMillis(); // Generación simple de ID
         this.tipo = tipo;
         this.referencia = referencia;
     }
 
-    // Getters y Setters...
+
     public String getIdMetodo() { return idMetodo; }
     public void setIdMetodo(String idMetodo) { this.idMetodo = idMetodo; }
 
@@ -32,14 +32,13 @@ public class MetodoPago {
     public String getReferencia() { return referencia; }
     public void setReferencia(String referencia) { this.referencia = referencia; }
 
-    // Métodos de Conversión DTO <-> Modelo
-    // DTO -> Modelo
+
     public static MetodoPago fromDTO(MetodoPagoDTO dto) {
         if (dto == null) return null;
         return new MetodoPago(dto.getIdMetodo(), dto.getTipo(), dto.getReferencia());
     }
 
-    // Modelo -> DTO
+
     public MetodoPagoDTO toDTO() {
         return new MetodoPagoDTO(this.idMetodo, this.tipo, this.referencia);
     }

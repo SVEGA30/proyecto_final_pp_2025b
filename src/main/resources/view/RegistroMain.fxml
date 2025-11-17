@@ -12,7 +12,7 @@
 <VBox alignment="CENTER" prefHeight="600" prefWidth="900" spacing="0" style="-fx-background-color: linear-gradient(to bottom right, #ffd500, #ffed4e);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto_final_pp.ViewController.RegistroController">
 
     <HBox alignment="CENTER" spacing="40.0" style="-fx-padding: 40;">
-        
+
         <!-- Sección izquierda - Ilustración -->
         <VBox alignment="CENTER" prefWidth="400" spacing="20">
             <VBox alignment="CENTER" spacing="15">
@@ -29,7 +29,7 @@
                         </font>
                     </Label>
                 </VBox>
-                
+
                 <!-- Elementos decorativos -->
                 <VBox alignment="CENTER" spacing="10" style="-fx-padding: 20 0 0 0;">
                     <HBox alignment="CENTER" spacing="15">
@@ -51,14 +51,14 @@
         <!-- Sección derecha - Formulario de Registro -->
         <VBox alignment="CENTER" prefWidth="380" spacing="25.0">
             <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 40 35 35 35; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);">
-                
+
                 <VBox alignment="CENTER_LEFT">
                     <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2b2b2b;" text="Crear Cuenta" />
                     <Label style="-fx-font-size: 14px; -fx-text-fill: #7a7a7a;" text="Completa tus datos para registrarte" />
                 </VBox>
 
                 <Label fx:id="lblMensaje" style="-fx-font-weight: bold; -fx-font-size: 12px; -fx-alignment: center; -fx-wrap-text: true; -fx-max-width: 300;" text="" textFill="#e74c3c" visible="false" />
-                
+
                 <VBox prefWidth="300" spacing="15.0">
                     <!-- Fila 1: Nombre Completo -->
                     <VBox spacing="8">
@@ -72,7 +72,7 @@
                             <Label style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;" text="Correo*" />
                             <TextField fx:id="txtCorreo" style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12; -fx-font-size: 14px;" />
                         </VBox>
-                        
+
                         <VBox prefWidth="145" spacing="8">
                             <Label style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;" text="Teléfono*" />
                             <TextField fx:id="txtTelefono" style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12; -fx-font-size: 14px;" />
@@ -85,14 +85,20 @@
                             <Label style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;" text="Contraseña*" />
                             <PasswordField fx:id="txtPassword" promptText="••••••••" style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12; -fx-font-size: 14px;" />
                         </VBox>
-                        
+
                         <VBox prefWidth="145" spacing="8">
                             <Label style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;" text="Dirección*" />
                             <TextField fx:id="txtDireccion" style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12; -fx-font-size: 14px;" />
                         </VBox>
                     </HBox>
 
-                    <!-- Fila 4: Método de Pago -->
+                    <!-- Fila 4: Alias de Dirección -->
+                    <VBox spacing="8">
+                        <Label style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;" text="Alias de Dirección (Opcional)" />
+                        <TextField fx:id="txtAliasDireccion" promptText="Ej: Casa, Trabajo, Oficina..." style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12; -fx-font-size: 14px;" />
+                    </VBox>
+
+                    <!-- Fila 5: Método de Pago -->
                     <VBox spacing="8">
                         <Label style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 13px;" text="Método de Pago Preferido*" />
                         <ComboBox fx:id="cbMetodoPago" promptText="Selecciona método de pago" style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12; -fx-font-size: 14px;" />
@@ -101,8 +107,8 @@
 
                 <!-- Botones -->
                 <VBox alignment="CENTER" prefWidth="300" spacing="15">
-                    <Button onAction="#registrarUsuario" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 300; -fx-pref-height: 50; -fx-background-radius: 12; -fx-font-size: 15px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);" text="Registrarse" />
-                            
+                    <Button fx:id="btnRegistrar" onAction="#registrarUsuario" style="-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 300; -fx-pref-height: 50; -fx-background-radius: 12; -fx-font-size: 15px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(43,43,43,0.3), 10, 0, 0, 3);" text="Registrarse" />
+
                     <Button onAction="#volverAlLogin" style="-fx-background-color: transparent; -fx-text-fill: #7a7a7a; -fx-border-color: #e9ecef; -fx-border-width: 2; -fx-pref-width: 300; -fx-pref-height: 45; -fx-background-radius: 12; -fx-border-radius: 12; -fx-font-size: 14px; -fx-cursor: hand;" text="← Volver al Login" />
                 </VBox>
 

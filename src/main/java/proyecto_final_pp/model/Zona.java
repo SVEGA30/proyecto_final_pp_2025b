@@ -11,27 +11,22 @@ public class Zona {
         this.nombre = nombre;
     }
 
-    // Constructor alternativo para crear sin ID
     public Zona(String nombre) {
         this.idZona = "ZONA_" + System.currentTimeMillis(); // Generación simple de ID
         this.nombre = nombre;
     }
 
-    // Getters y Setters...
     public String getIdZona() { return idZona; }
     public void setIdZona(String idZona) { this.idZona = idZona; }
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
 
-    // Métodos de Conversión DTO <-> Modelo
-    // DTO -> Modelo
     public static Zona fromDTO(ZonaDTO dto) {
         if (dto == null) return null;
         return new Zona(dto.getIdZona(), dto.getNombre());
     }
 
-    // Modelo -> DTO
     public ZonaDTO toDTO() {
         return new ZonaDTO(this.idZona, this.nombre);
     }

@@ -2,11 +2,7 @@ package proyecto_final_pp.adapter;
 
 // Simula un servicio externo de cálculo de tarifas
 public class ServicioCalculoTarifaExterno {
-
-    // Este servicio tiene una interfaz incompatible con nuestra CalculadoraTarifaStrategy
     public double calcularTarifaAPI(String origen, String destino, double peso, double volumen, String tipoEnvio, String[] serviciosAdicionales) {
-        // Simula una llamada a una API externa
-        // Lógica interna de la API externa
         double tarifa = 4000; // Costo base de la API externa
         tarifa += peso * 800; // $800 por kg
         tarifa += volumen * 400; // $400 por m³
@@ -37,7 +33,6 @@ public class ServicioCalculoTarifaExterno {
             case "PRIORITARIO":
                 tarifa *= 1.25;
                 break;
-            // ESTANDAR no recargo
         }
 
         return tarifa;

@@ -82,7 +82,7 @@ public class Envio implements EnvioSubject {
     public String getRepartidorAsignadoId() { return repartidorAsignadoId; }
     public void setRepartidorAsignadoId(String repartidorAsignadoId) { this.repartidorAsignadoId = repartidorAsignadoId; }
 
-    // Métodos de gestión de estado
+
     public void asignarARepartidor(String idRepartidor) {
         if (estadoActual.puedeAsignar()) {
             this.repartidorAsignadoId = idRepartidor;

@@ -8,7 +8,7 @@ public class Repartidor {
     private String documento;
     private String telefono;
     private String zonaCobertura;
-    private String disponibilidad; // Usar String directamente
+    private String disponibilidad;
 
     public Repartidor() {}
 
@@ -18,10 +18,10 @@ public class Repartidor {
         this.documento = documento;
         this.telefono = telefono;
         this.zonaCobertura = zonaCobertura;
-        this.disponibilidad = "ACTIVO"; // Valor por defecto como String
+        this.disponibilidad = "ACTIVO";
     }
 
-    // Getters y Setters
+
     public String getIdRepartidor() { return idRepartidor; }
     public void setIdRepartidor(String idRepartidor) { this.idRepartidor = idRepartidor; }
 

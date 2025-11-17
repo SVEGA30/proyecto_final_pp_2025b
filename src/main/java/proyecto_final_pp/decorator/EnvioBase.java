@@ -5,7 +5,7 @@ import proyecto_final_pp.model.dto.DireccionDTO;
 public class EnvioBase implements EnvioConServicioAdicional {
 
     public EnvioBase() {
-        // Constructor vacío (opcional, pero explícito)
+
     }
 
     @Override

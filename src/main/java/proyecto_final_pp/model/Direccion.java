@@ -28,7 +28,6 @@ public class Direccion {
         this.alias = alias;
     }
 
-    // Getters y Setters
     public String getIdDireccion() { return idDireccion; }
     public void setIdDireccion(String idDireccion) { this.idDireccion = idDireccion; }
 
@@ -44,7 +43,7 @@ public class Direccion {
     public String getAlias() { return alias; }
     public void setAlias(String alias) { this.alias = alias; }
 
-    // Conversiones DTO
+
     public DireccionDTO toDTO() {
         DireccionDTO dto = new DireccionDTO();
         dto.setIdDireccion(this.idDireccion);

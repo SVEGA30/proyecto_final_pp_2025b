@@ -23,18 +23,16 @@ public class AdminService {
 
     public AdminService() {
         this.gestorDatos = GestorDatos.getInstance();
-        // Proporcionar una estrategia por defecto
         CalculadoraTarifaStrategy estrategiaPorDefecto = new CalculadoraTarifaBasica();
         this.envioService = new EnvioService(estrategiaPorDefecto);
     }
 
-    // Constructor alternativo que acepta una estrategia específica
     public AdminService(CalculadoraTarifaStrategy estrategia) {
         this.gestorDatos = GestorDatos.getInstance();
         this.envioService = new EnvioService(estrategia);
     }
 
-    // --- RF-010: Gestionar usuarios ---
+    // Gestionar usuarios
     public boolean crearUsuario(UsuarioDTO usuarioDTO) {
         return gestorDatos.agregarUsuario(usuarioDTO);
     }
@@ -51,7 +49,7 @@ public class AdminService {
         return gestorDatos.getAllUsuarios();
     }
 
-    // --- RF-011: Gestionar repartidores y su disponibilidad ---
+    // Gestionar repartidores y su disponibilidad
     public boolean crearRepartidor(RepartidorDTO repartidorDTO) {
         return gestorDatos.agregarRepartidor(repartidorDTO);
     }
@@ -72,12 +70,11 @@ public class AdminService {
         return gestorDatos.getRepartidoresDisponibles();
     }
 
-    // CORREGIDO: Usar String en lugar del enum
     public boolean actualizarDisponibilidadRepartidor(String idRepartidor, String nuevaDisponibilidad) {
         return gestorDatos.actualizarDisponibilidadRepartidor(idRepartidor, nuevaDisponibilidad);
     }
 
-    // --- RF-012: Asignar/enviar/incidencias ---
+    //Asignar/enviar/incidencias
     public boolean asignarEnvioARepartidor(String idEnvio, String idRepartidor) {
         Envio envioModelo = gestorDatos.getEnvioModeloPorId(idEnvio);
         if (envioModelo != null) {
@@ -134,7 +131,7 @@ public class AdminService {
         return false;
     }
 
-    // --- RF-013: Panel de métricas ---
+    //Panel de métricas
     public double getTiempoPromedioEntregaFiltradoPorZona(LocalDate desde, LocalDate hasta, String zona) {
         return gestorDatos.getTiempoPromedioEntregaFiltradoPorZonaFiltradosPorFecha(desde, hasta, zona);
     }
@@ -167,7 +164,7 @@ public class AdminService {
                 ));
     }
 
-    // --- Métodos para obtener ingresos por servicios adicionales ---
+    //Métodos para obtener ingresos por servicios adicionales
     public Map<String, Double> getIngresosPorServicioAdicional(LocalDate desde, LocalDate hasta) {
         return gestorDatos.getIngresosPorServicioAdicionalFiltradosPorFecha(desde, hasta);
     }
@@ -176,7 +173,7 @@ public class AdminService {
         return gestorDatos.getTopIncidenciasFiltradasPorFecha(desde, hasta);
     }
 
-    // --- Otros métodos de utilidad para admin ---
+    //Otros métodos de utilidad para admin
     public List<EnvioDTO> getTodosLosEnvios() {
         return gestorDatos.getEnvios().stream()
                 .map(Envio::toDTOSimplified)
@@ -189,7 +186,6 @@ public class AdminService {
                 .collect(Collectors.toList());
     }
 
-    // CORREGIDO: Usar String en lugar del enum eliminado
     public List<EnvioDTO> getEnviosFiltradosPorEstado(String estado) {
         return gestorDatos.getEnviosPorEstado(estado);
     }
@@ -222,12 +218,10 @@ public class AdminService {
         );
     }
 
-    // Método para cambiar la estrategia de cálculo de tarifas
     public void cambiarEstrategiaCalculoTarifa(CalculadoraTarifaStrategy nuevaEstrategia) {
         envioService.setCStrategy(nuevaEstrategia);
     }
 
-    // Métodos delegados a EnvioService para mantener consistencia
     public double calcularCostoEstimado(DireccionDTO origenDTO, DireccionDTO destinoDTO,
                                         double peso, double volumen, List<String> serviciosExtras,
                                         String tipoEnvio) {

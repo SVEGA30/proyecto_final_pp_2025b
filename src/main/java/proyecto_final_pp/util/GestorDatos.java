@@ -144,7 +144,7 @@ public class GestorDatos {
         return envio;
     }
 
-    // --- MÉTODOS DE USUARIO ---
+    //MÉTODOS DE USUARIO
     public UsuarioDTO buscarUsuarioPorCorreo(String correo) {
         if (correo == null || correo.trim().isEmpty()) return null;
         Usuario usuario = usuarios.stream()
@@ -185,7 +185,7 @@ public class GestorDatos {
         return usuarios.stream().map(Usuario::toDTO).collect(Collectors.toList());
     }
 
-    // --- MÉTODOS DE ENVÍO ---
+    //MÉTODOS DE ENVÍO
     public EnvioDTO buscarEnvioPorId(String idEnvio) {
         if (idEnvio == null || idEnvio.trim().isEmpty()) return null;
         Envio envio = envios.stream()
@@ -350,12 +350,12 @@ public class GestorDatos {
         return false;
     }
 
-    // --- MÉTODOS DE ZONA ---
+    //MÉTODOS DE ZONA
     public List<ZonaDTO> getAllZonas() {
         return zonas.stream().map(Zona::toDTO).collect(Collectors.toList());
     }
 
-    // --- MÉTODOS DE REPARTIDOR ---
+    //MÉTODOS DE REPARTIDOR
     public List<RepartidorDTO> getAllRepartidores() {
         return repartidores.stream().map(Repartidor::toDTO).collect(Collectors.toList());
     }
@@ -415,7 +415,7 @@ public class GestorDatos {
                 .orElse(null);
     }
 
-    // --- MÉTODO DE ADMINISTRADOR ---
+    //
     public AdministradorDTO getAdministrador() {
         return administrador != null ? administrador.toDTO() : null;
     }

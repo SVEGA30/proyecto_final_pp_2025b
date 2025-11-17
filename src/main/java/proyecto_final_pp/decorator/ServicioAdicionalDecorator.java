@@ -2,10 +2,6 @@ package proyecto_final_pp.decorator;
 
 import proyecto_final_pp.model.dto.DireccionDTO;
 
-/**
- * Clase abstracta que sirve como base para todos los decoradores de servicios adicionales.
- * Implementa el patrón Decorator para añadir funcionalidades dinámicamente a un envío.
- */
 public abstract class ServicioAdicionalDecorator implements EnvioConServicioAdicional {
 
     protected EnvioConServicioAdicional envioDecorado;
@@ -17,17 +13,11 @@ public abstract class ServicioAdicionalDecorator implements EnvioConServicioAdic
         this.envioDecorado = envioDecorado;
     }
 
-    /**
-     * Delega el cálculo al componente decorado SIN validaciones.
-     * Las validaciones deben hacerse una sola vez en el componente base (EnvioBase).
-     */
     @Override
     public double calcularCosto(DireccionDTO origen, DireccionDTO destino, double peso, double volumen, String tipoEnvio) {
         return envioDecorado.calcularCosto(origen, destino, peso, volumen, tipoEnvio);
     }
 
-    // ... resto de métodos (getEnvioDecorado, setEnvioDecorado, getDescripcionServicio, getCostoAdicional, toString, etc.)
-    // (los mantienes igual, ya están bien)
 
     public abstract String getDescripcionServicio();
     public abstract double getCostoAdicional();
@@ -68,7 +58,6 @@ public abstract class ServicioAdicionalDecorator implements EnvioConServicioAdic
         return false;
     }
 
-    // Getters y setters (mantenidos)
     public EnvioConServicioAdicional getEnvioDecorado() {
         return envioDecorado;
     }

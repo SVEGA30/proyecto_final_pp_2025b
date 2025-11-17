@@ -9,10 +9,10 @@ import proyecto_final_pp.observer.UsuarioNotificacionObserver; // Importar el ob
 import java.util.ArrayList;
 import java.util.List;
 
-// Asumiendo que el modelo Envio maneja instancias de Usuario y Direccion
+
 public class EnvioBuilder {
     private String idEnvio;
-    private Usuario usuario; // Necesitamos el usuario para el observador
+    private Usuario usuario;
     private Direccion direccionOrigen;
     private Direccion direccionDestino;
     private double peso = 1.0;
@@ -21,7 +21,6 @@ public class EnvioBuilder {
     private String tipoEnvio = "ESTANDAR"; // Valor por defecto
     private List<String> serviciosExtras = new ArrayList<>();
 
-    // Métodos 'con' (setters fluent) que reciben modelos
     public EnvioBuilder conUsuario(Usuario usuario) {
         this.usuario = usuario;
         return this;
@@ -71,7 +70,6 @@ public class EnvioBuilder {
         return this;
     }
 
-    // Método build que crea la instancia del modelo Envio
     public Envio build() {
         if (usuario == null || direccionOrigen == null || direccionDestino == null) {
             throw new IllegalStateException("Usuario, Origen y Destino son obligatorios para construir un Envío.");
@@ -82,16 +80,13 @@ public class EnvioBuilder {
             idEnvio = generarIdUnico();
         }
 
-        // Crear el modelo Envio con todos los datos
         Envio envio = new Envio(idEnvio, usuario.getIdUsuario(), direccionOrigen, direccionDestino, peso, volumen, costo, tipoEnvio, serviciosExtras);
 
-        // Registrar al usuario como observador del envío recién creado
-        // Creamos un observador basado en el usuario
+
         UsuarioNotificacionObserver observadorUsuario = new UsuarioNotificacionObserver(usuario);
         envio.agregarObservador(observadorUsuario);
 
-        // Si el builder setea un costo, se lo asigna al envío
-        envio.setCosto(this.costo); // Asumiendo que el costo ya fue calculado antes de llamar al builder
+        envio.setCosto(this.costo);
 
         return envio;
     }

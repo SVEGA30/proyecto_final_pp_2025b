@@ -22,7 +22,6 @@ public class RegistroController {
     @FXML private TextField txtTelefono;
     @FXML private PasswordField txtPassword;
     @FXML private TextField txtDireccion;
-    @FXML private ComboBox<String> cbZona;
     @FXML private TextField txtAliasDireccion;
     @FXML private ComboBox<String> cbMetodoPago;
     @FXML private Label mensajeLabel;
@@ -37,20 +36,8 @@ public class RegistroController {
 
             // Debug: Verificar que los elementos FXML se inyectaron
             System.out.println("=== INICIALIZANDO REGISTRO CONTROLLER ===");
-            System.out.println("cbZona: " + (cbZona != null ? "OK" : "NULL"));
             System.out.println("cbMetodoPago: " + (cbMetodoPago != null ? "OK" : "NULL"));
             System.out.println("txtNombre: " + (txtNombre != null ? "OK" : "NULL"));
-
-            // Cargar zonas disponibles
-            if (cbZona != null) {
-                List<String> zonas = logisticaFacade.obtenerTodasZonas().stream()
-                        .map(zona -> zona.getNombre())
-                        .collect(java.util.stream.Collectors.toList());
-                cbZona.setItems(FXCollections.observableArrayList(zonas));
-                System.out.println("Zonas cargadas: " + zonas.size());
-            } else {
-                System.err.println("ERROR: cbZona es null - verificar FXML");
-            }
 
             // Cargar métodos de pago
             if (cbMetodoPago != null) {
@@ -80,16 +67,15 @@ public class RegistroController {
             String telefono = txtTelefono.getText().trim();
             String password = txtPassword.getText();
             String direccionCalle = txtDireccion.getText().trim();
-            String zona = cbZona.getValue();
             String aliasDireccion = txtAliasDireccion.getText().trim();
             String metodoPagoSeleccionado = cbMetodoPago.getValue();
 
-            // Crear dirección inicial
+            // Crear dirección inicial (sin zona)
             DireccionDTO direccionDTO = new DireccionDTO();
             direccionDTO.setCalle(direccionCalle);
             direccionDTO.setCiudad("Bogotá");
-            direccionDTO.setZona(zona);
             direccionDTO.setAlias(aliasDireccion.isEmpty() ? "Casa" : aliasDireccion);
+            // No establecer zona
 
             List<DireccionDTO> direcciones = new ArrayList<>();
             direcciones.add(direccionDTO);
@@ -150,10 +136,6 @@ public class RegistroController {
             mostrarError("La dirección es obligatoria");
             return false;
         }
-        if (cbZona == null || cbZona.getValue() == null) {
-            mostrarError("Seleccione una zona");
-            return false;
-        }
         if (cbMetodoPago == null || cbMetodoPago.getValue() == null) {
             mostrarError("Seleccione un método de pago");
             return false;
@@ -164,7 +146,6 @@ public class RegistroController {
     @FXML
     private void volverAlLogin() {
         try {
-            // RUTA CORREGIDA
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
             Parent root = loader.load();
 

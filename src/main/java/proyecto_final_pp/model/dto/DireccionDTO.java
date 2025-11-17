@@ -47,7 +47,6 @@ public class DireccionDTO {
 
         DireccionDTO that = (DireccionDTO) obj;
 
-        // Comparar por contenido, no por referencia o ID
         return Objects.equals(calle, that.calle) &&
                 Objects.equals(ciudad, that.ciudad) &&
                 Objects.equals(zona, that.zona) &&
