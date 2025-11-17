@@ -56,7 +56,7 @@ public class GestorDatos {
 
     private void cargarDatosIniciales() {
         try {
-            // Cargar zonas
+            // Cargar zonas (mantener las existentes)
             Zona zona1 = new Zona("Chapinero");
             Zona zona2 = new Zona("Usaquén");
             Zona zona3 = new Zona("Suba");
@@ -66,7 +66,7 @@ public class GestorDatos {
             this.zonas.add(zona3);
             this.zonas.add(zona4);
 
-            // Cargar usuarios de prueba
+            // Cargar usuarios de prueba existentes
             Usuario usuario1 = new Usuario("K000001", "Juan Pérez", "juan@gmail.com", "1234567890", "1234");
             usuario1.agregarDireccion(new Direccion("Calle 123 #45-67", "Bogotá", zona1.getNombre(), "Casa"));
             usuario1.agregarDireccion(new Direccion("Avenida 456 #78-90", "Bogotá", zona2.getNombre(), "Oficina"));
@@ -83,16 +83,40 @@ public class GestorDatos {
             usuario3.agregarMetodoPago("DaviPlata");
             usuarios.add(usuario3);
 
+            // ✅ NUEVOS USUARIOS (2 adicionales)
+            Usuario usuario4 = new Usuario("K000004", "Ana Martínez", "ana@gmail.com", "3112223344", "1234");
+            usuario4.agregarDireccion(new Direccion("Carrera 15 #88-90", "Bogotá", zona1.getNombre(), "Apartamento"));
+            usuario4.agregarMetodoPago("Tarjeta Débito");
+            usuarios.add(usuario4);
+
+            Usuario usuario5 = new Usuario("K000005", "Pedro Rodríguez", "pedro@gmail.com", "3225556677", "1234");
+            usuario5.agregarDireccion(new Direccion("Calle 72 #12-45", "Bogotá", zona2.getNombre(), "Oficina"));
+            usuario5.agregarMetodoPago("Efectivo");
+            usuarios.add(usuario5);
+
+            // Cargar repartidores existentes
             Repartidor repartidor1 = new Repartidor("R000001", "Carlos Rodríguez", "12345678", "3001234567", "Chapinero");
             Repartidor repartidor2 = new Repartidor("R000002", "Ana Gómez", "87654321", "3007654321", "Usaquén");
             Repartidor repartidor3 = new Repartidor("R000003", "Luis Martínez", "11223344", "3001122334", "Suba");
             this.repartidores.add(repartidor1);
             this.repartidores.add(repartidor2);
             this.repartidores.add(repartidor3);
+
+            // ✅ NUEVOS REPARTIDORES (2 adicionales) con diferentes estados
+            Repartidor repartidor4 = new Repartidor("R000004", "María López", "44556677", "3004455667", "Teusaquillo");
+            repartidor4.setDisponibilidad("EN_RUTA"); // En ruta actualmente
+
+            Repartidor repartidor5 = new Repartidor("R000005", "José García", "99887766", "3009988776", "Chapinero");
+            repartidor5.setDisponibilidad("INACTIVO"); // Inactivo
+
+            this.repartidores.add(repartidor4);
+            this.repartidores.add(repartidor5);
+
+            // Cambiar estados de repartidores existentes para variedad
             repartidor2.setDisponibilidad("EN_RUTA");
             repartidor3.setDisponibilidad("INACTIVO");
 
-            // Cargar envíos de prueba
+            // Cargar envíos de prueba existentes
             LocalDateTime ahora = LocalDateTime.now();
             LocalDateTime fechaEntrega1 = ahora.minusDays(2);
             LocalDateTime fechaEntrega2 = ahora.minusDays(1);
@@ -116,7 +140,81 @@ public class GestorDatos {
             Envio e4 = crearEnvioConIncidencia("ENV_000004", usuario1, usuario3, fechaIncidencia.minusHours(1), fechaIncidencia);
             this.envios.add(e4);
 
+            // ✅ NUEVOS ENVÍOS (8 adicionales) con diferentes estados
+            LocalDateTime fechaHoy = LocalDateTime.now();
 
+            // Envío 5: ENTREGADO con servicios extras
+            Envio e5 = crearEnvioEntregado("ENV_000005", usuario4, usuario1, fechaHoy.minusDays(3), fechaHoy.minusDays(2));
+            e5.setCosto(e5.getCosto() + 5000);
+            e5.getServiciosExtras().addAll(List.of("SEGURO", "FRAGIL"));
+            this.envios.add(e5);
+
+            // Envío 6: EN RUTA
+            Envio e6 = new Envio("ENV_000006", usuario5.getIdUsuario(),
+                    usuario5.getDirecciones().get(0), usuario2.getDirecciones().get(0),
+                    3.0, 0.012, 15000.0, "ESTANDAR", List.of("FIRMA_REQUERIDA"));
+            e6.setFechaCreacion(fechaHoy.minusHours(4));
+            e6.asignarARepartidor("R000001");
+            e6.iniciarRuta(); // Estado: EN_RUTA
+            this.envios.add(e6);
+
+            // Envío 7: ASIGNADO
+            Envio e7 = new Envio("ENV_000007", usuario1.getIdUsuario(),
+                    usuario1.getDirecciones().get(0), usuario4.getDirecciones().get(0),
+                    2.5, 0.009, 12000.0, "EXPRESS", List.of("EMBALAJE_ESPECIAL"));
+            e7.setFechaCreacion(fechaHoy.minusHours(2));
+            e7.asignarARepartidor("R000004"); // Estado: ASIGNADO
+            this.envios.add(e7);
+
+            // Envío 8: INCIDENCIA
+            Envio e8 = crearEnvioConIncidencia("ENV_000008", usuario3, usuario5, fechaHoy.minusDays(1), fechaHoy.minusHours(6));
+            e8.getServiciosExtras().add("SEGURO");
+            this.envios.add(e8);
+
+            // Envío 9: SOLICITADO
+            Envio e9 = new Envio("ENV_000009", usuario2.getIdUsuario(),
+                    usuario2.getDirecciones().get(0), usuario3.getDirecciones().get(0),
+                    1.0, 0.005, 8000.0, "ESTANDAR", new ArrayList<>());
+            e9.setFechaCreacion(fechaHoy.minusHours(1));
+            // Estado: SOLICITADO (por defecto)
+            this.envios.add(e9);
+
+            // Envío 10: CANCELADO
+            Envio e10 = new Envio("ENV_000010", usuario4.getIdUsuario(),
+                    usuario4.getDirecciones().get(0), usuario2.getDirecciones().get(0),
+                    4.0, 0.015, 18000.0, "EXPRESS", List.of("SEGURO", "FRAGIL"));
+            e10.setFechaCreacion(fechaHoy.minusDays(1));
+            e10.cancelar(); // Estado: CANCELADO
+            this.envios.add(e10);
+
+            // Envío 11: ENTREGADO express
+            Envio e11 = crearEnvioEntregado("ENV_000011", usuario5, usuario4, fechaHoy.minusHours(8), fechaHoy.minusHours(6));
+            e11.setTipoEnvio("EXPRESS");
+            e11.setCosto(e11.getCosto() + 4000);
+            this.envios.add(e11);
+
+            // Envío 12: EN RUTA con múltiples servicios
+            Envio e12 = new Envio("ENV_000012", usuario1.getIdUsuario(),
+                    usuario1.getDirecciones().get(1), usuario5.getDirecciones().get(0),
+                    2.0, 0.010, 14000.0, "ESTANDAR",
+                    List.of("SEGURO", "FIRMA_REQUERIDA", "EMBALAJE_ESPECIAL"));
+            e12.setFechaCreacion(fechaHoy.minusHours(3));
+            e12.asignarARepartidor("R000002");
+            e12.iniciarRuta(); // Estado: EN_RUTA
+            this.envios.add(e12);
+
+            System.out.println("✅ Datos cargados exitosamente:");
+            System.out.println("   👥 Usuarios: " + usuarios.size());
+            System.out.println("   🚚 Repartidores: " + repartidores.size());
+            System.out.println("   📦 Envíos: " + envios.size());
+
+            // Mostrar distribución de estados
+            Map<String, Long> conteoEstados = envios.stream()
+                    .collect(Collectors.groupingBy(
+                            e -> e.getEstadoActual().getNombre(),
+                            Collectors.counting()
+                    ));
+            System.out.println("   📊 Distribución de envíos: " + conteoEstados);
 
         } catch (Exception e) {
             System.err.println("Error al cargar datos iniciales: " + e.getMessage());

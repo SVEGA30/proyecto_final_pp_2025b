@@ -296,7 +296,9 @@ public class ReportesController {
         }
     }
 
-    // MÉTODO IMPLEMENTADO: Generar PDF real con PDFBox 3.x
+
+
+
     private void generarPDFReal(File file, String contenido) throws IOException {
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage(PDRectangle.A4);
@@ -341,12 +343,10 @@ public class ReportesController {
 
                 yPosition -= lineHeight; // Espacio adicional
 
-                // Contenido del reporte
                 contentStream.setFont(fontNormal, 10);
                 String[] lineas = contenido.split("\n");
 
                 for (String linea : lineas) {
-                    // Verificar si necesitamos nueva página
                     if (yPosition < margin + 50) {
                         contentStream.close(); // Cerrar página actual
 
@@ -388,13 +388,13 @@ public class ReportesController {
                 contentStream.endText();
 
             } finally {
-                // Asegurarse de cerrar el contentStream
+
                 if (contentStream != null) {
                     contentStream.close();
                 }
             }
 
-            // Guardar el documento
+
             document.save(file);
         }
     }
@@ -407,7 +407,6 @@ public class ReportesController {
         csv.append("Campo,Valor\n");
 
         for (String linea : lineas) {
-            // Limpiar la línea y convertir a formato CSV
             if (linea.contains(":")) {
                 String[] partes = linea.split(":", 2);
                 if (partes.length == 2) {
@@ -470,5 +469,40 @@ public class ReportesController {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+    // En ReportesController.java, agregar este método:
+
+    @FXML
+    private void verGraficas() {
+        LocalDate desde = dpFechaDesde.getValue();
+        LocalDate hasta = dpFechaHasta.getValue();
+        String tipo = cbTipoReporte.getValue();
+
+        if (tipo == null || desde == null || hasta == null) {
+            mostrarError("Seleccione un tipo de reporte y un rango de fechas para ver las gráficas.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Graficas.fxml"));
+            Parent root = loader.load();
+
+            // Pasar los datos al controlador de gráficas
+            GraficasController chartsController = loader.getController();
+            chartsController.setDatosReporte(desde, hasta, tipo);
+
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Gráficas - " + tipo + " - Urban Express");
+            stage.setMinWidth(1000);
+            stage.setMinHeight(700);
+            stage.show();
+
+        } catch (IOException e) {
+            mostrarError("Error al cargar ventana de gráficas: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

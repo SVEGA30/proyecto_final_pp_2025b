@@ -74,7 +74,6 @@ public class GestionDireccionesController {
             return new javafx.beans.property.SimpleStringProperty(dir.getZona() != null ? dir.getZona() : "");
         });
 
-        // Configurar columna de acciones
         colAcciones.setCellFactory(new Callback<TableColumn<DireccionDTO, Void>, TableCell<DireccionDTO, Void>>() {
             @Override
             public TableCell<DireccionDTO, Void> call(TableColumn<DireccionDTO, Void> param) {
