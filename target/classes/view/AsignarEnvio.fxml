@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="proyecto_final_pp.ViewController.admin.AsignarEnvioController"
+      fx:controller="proyecto_final_pp.ViewController.AsignarEnvioController"
       spacing="20" alignment="CENTER" prefWidth="700" prefHeight="500"
       style="-fx-background-color: linear-gradient(to bottom right, #ffd500, #ffed4e);">
 

@@ -130,6 +130,13 @@
                             style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 12px;"/>
                   <CheckBox fx:id="chkEmbalajeEspecial" text="📦 Embalaje Especial"
                             style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 12px;"/>
+
+                  <!-- NUEVO: Método de Pago -->
+                  <VBox spacing="4.0" style="-fx-padding: 10 0 0 0;">
+                     <Label text="Método de Pago:" style="-fx-text-fill: #444444; -fx-font-weight: bold; -fx-font-size: 12px;"/>
+                     <ComboBox fx:id="cbMetodoPago" prefWidth="240.0" promptText="Seleccione método"
+                               style="-fx-background-color: #f8f9fa; -fx-border-color: #e9ecef; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 10; -fx-font-size: 13px;"/>
+                  </VBox>
                </VBox>
             </VBox>
 
